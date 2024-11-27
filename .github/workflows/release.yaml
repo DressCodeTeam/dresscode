@@ -110,12 +110,12 @@ jobs:
       #     platform: ios
       #     args: "--export-options-plist ios/GHAExportOptions.plist --verbose"
 
-      - name: 🧹 Clean Up
-        if: ${{ always() }}
-        run: |
-          PP_PATH=$RUNNER_TEMP/temp.mobileprovision
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          rm $RUNNER_TEMP/temp.mobileprovision
+      # - name: 🧹 Clean Up
+      #   if: ${{ always() }}
+      #   run: |
+      #     PP_PATH=$RUNNER_TEMP/temp.mobileprovision
+      #     security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+      #     rm $RUNNER_TEMP/temp.mobileprovision
 
       # - name: 📦 Upload Artifact
       #   uses: actions/upload-artifact@v4
