@@ -24,6 +24,12 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: gradle
+      
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
 
       - name: 🐦 Setup Shorebird
         uses: shorebirdtech/setup-shorebird@v1
