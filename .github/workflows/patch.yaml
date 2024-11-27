@@ -42,7 +42,7 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
         with:
           platform: android
-          args: "--verbose --track=staging"
+          args: "--track=staging"
 
   # patch-ios:
   #   runs-on: macos-latest
