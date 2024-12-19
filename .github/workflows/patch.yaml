@@ -21,7 +21,7 @@ jobs:
       - name: ☕️ Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: "21"
+          java-version: "17"
           distribution: "temurin"
           cache: gradle
 
@@ -42,7 +42,7 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
         with:
           platform: android
-          args: "--track=staging"
+          args: "--verbose --staging"
 
   # patch-ios:
   #   runs-on: macos-latest
