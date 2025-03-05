@@ -30,6 +30,9 @@ jobs:
         with:
           cache: true
 
+      - name: 📦 Get Flutter Dependencies
+        run: flutter pub get
+
       - name: 🔐 Decode Keystore
         run: echo ${{ secrets.KEYSTORE }} | base64 --decode > ${{ github.workspace }}/keystore.jks
 
