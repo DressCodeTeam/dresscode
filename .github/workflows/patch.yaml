@@ -30,26 +30,13 @@ jobs:
         with:
           cache: true
 
-      - name: 🔐 Decode Keystore
-        run: echo ${{ secrets.KEYSTORE }} | base64 --decode > ${{ github.workspace }}/keystore.jks
-
-      - name: 🧩 Shorebird Patch Debug
+      - name: 🧩 Shorebird Patch
+        uses: shorebirdtech/shorebird-patch@v0
+        id: shorebird-patch
         env:
-          SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
           KEYSTORE_FILE: ${{ github.workspace }}/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-        run: |
-          shorebird apps  # Liste les applications
-          shorebird patch android --verbose --staging || true  # Force l'affichage de l'erreur
-
-      # - name: 🧩 Shorebird Patch
-      #   uses: shorebirdtech/shorebird-patch@v0
-      #   id: shorebird-patch
-      #   env:
-      #     KEYSTORE_FILE: ${{ github.workspace }}/keystore.jks
-      #     KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      #     KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-      #   with:
-      #     platform: android
-      #     args: "--verbose --staging"
+        with:
+          platform: android
+          args: "--verbose --staging"
