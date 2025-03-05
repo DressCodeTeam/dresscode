@@ -122,3 +122,4 @@ jobs:
         with:
           name: flutter_and_friends-${{ github.ref_name }}.ipa
           path: build/ios/ipa/flutter_and_friends.ipa
+
