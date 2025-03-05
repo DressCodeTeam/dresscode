@@ -30,6 +30,9 @@ jobs:
         with:
           cache: true
 
+      - name: 🔐 Decode Keystore
+        run: echo ${{ secrets.KEYSTORE }} | base64 --decode > ${{ github.workspace }}/keystore.jks
+
       - name: 🧩 Shorebird Patch
         uses: shorebirdtech/shorebird-patch@v0
         id: shorebird-patch
