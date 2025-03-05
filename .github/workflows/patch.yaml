@@ -42,4 +42,4 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
         with:
           platform: android
-          args: "--verbose --staging"
+          args: "--verbose --track=staging"
