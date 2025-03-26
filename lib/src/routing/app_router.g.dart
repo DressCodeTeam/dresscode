@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'main.dart';
+part of 'app_router.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$helloWorldHash() => r'9abaa5ab530c55186861f2debdaa218aceacb7eb';
+String _$goRouterHash() => r'8f32ada40b108de156814ac41136f82de3345617';
 
-/// See also [helloWorld].
-@ProviderFor(helloWorld)
-final helloWorldProvider = AutoDisposeProvider<String>.internal(
-  helloWorld,
-  name: r'helloWorldProvider',
+/// See also [goRouter].
+@ProviderFor(goRouter)
+final goRouterProvider = AutoDisposeProvider<GoRouter>.internal(
+  goRouter,
+  name: r'goRouterProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$helloWorldHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$goRouterHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef HelloWorldRef = AutoDisposeProviderRef<String>;
+typedef GoRouterRef = AutoDisposeProviderRef<GoRouter>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
