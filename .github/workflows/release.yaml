@@ -1,61 +1,57 @@
-name: release
+# name: release
 
-on:
-  push:
-    tags:
-      - "v[0-9].[0-9]+.[0-9]+" # e.g. v1.0.0
+# on:
+#   push:
+#     tags:
+#       - "v[0-9].[0-9]+.[0-9]+" # e.g. v1.0.0
+# jobs:
+#   release-android:
+#     runs-on: ubuntu-latest
 
-# env:
-#   SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
+#     name: 🤖 Release Android
 
-jobs:
-  release-android:
-    runs-on: ubuntu-latest
+#     steps:
+#       - name: 📚 Git Checkout
+#         uses: actions/checkout@v4
 
-    name: 🤖 Release Android
+#       - name: ☕️ Setup Java
+#         uses: actions/setup-java@v4
+#         with:
+#           java-version: "17"
+#           distribution: "temurin"
+#           cache: gradle
 
-    steps:
-      - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+#       - name: 🐦 Setup Shorebird
+#         uses: shorebirdtech/setup-shorebird@v1
+#         with:
+#           flutter-version: '3.19.x'
+#           channel: 'stable'
+#           cache: true
 
-      - name: ☕️ Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: "temurin"
-          cache: gradle
+#       - name: 🔐 Decode Keystore
+#         run: echo ${{ secrets.KEYSTORE }} | base64 --decode > ${{ github.workspace }}/keystore.jks
 
-      - name: 🐦 Setup Shorebird
-        uses: shorebirdtech/setup-shorebird@v1
-        with:
-          flutter-version: '3.19.x'
-          channel: 'stable'
-          cache: true
+#       - name: 🚀 Shorebird Release
+#         uses: shorebirdtech/shorebird-release@v0
+#         env:
+#           KEYSTORE_FILE: ${{ github.workspace }}/keystore.jks
+#           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+#           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+#           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
+#         with:
+#           platform: android
+#           args: "--verbose --artifact=apk"
 
-      - name: 🔐 Decode Keystore
-        run: echo ${{ secrets.KEYSTORE }} | base64 --decode > ${{ github.workspace }}/keystore.jks
+#       - name: 📦 Upload APK
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: dresscode-${{ github.ref_name }}.apk
+#           path: build/app/outputs/apk/release/app-release.apk
 
-      - name: 🚀 Shorebird Release
-        uses: shorebirdtech/shorebird-release@v0
-        env:
-          KEYSTORE_FILE: ${{ github.workspace }}/keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-          SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
-        with:
-          platform: android
-          args: "--verbose --artifact=apk"
-
-      - name: 📦 Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: dresscode-${{ github.ref_name }}.apk
-          path: build/app/outputs/apk/release/app-release.apk
-
-      - name: 📦 Upload App Bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: dresscode-${{ github.ref_name }}.aab
-          path: build/app/outputs/bundle/release/app-release.aab
+#       - name: 📦 Upload App Bundle
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: dresscode-${{ github.ref_name }}.aab
+#           path: build/app/outputs/bundle/release/app-release.aab
 
         
