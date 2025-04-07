@@ -1,4 +1,5 @@
 import 'package:dresscode/src/pages/closet_page.dart';
+import 'package:dresscode/src/pages/outfits.dart';
 import 'package:dresscode/src/providers/state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,7 @@ class HomePage extends ConsumerWidget {
     final indexBottomNavbar = ref.watch(indexBottomNavbarProvider);
     final pages = [
       const ClosetPage(),
+      const OutfitsPage(),
       const Center(child: Text('Outfit pages')),
     ];
 
@@ -18,9 +20,12 @@ class HomePage extends ConsumerWidget {
       appBar: AppBar(title: const Text('DressCode')),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: indexBottomNavbar,
+        onTap: (index) {
+          ref.read(indexBottomNavbarProvider.notifier).state = index;
+        },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Garde-robe'),
-          BottomNavigationBarItem(icon: Icon(Icons.cases), label: 'Tenues'),
+          BottomNavigationBarItem(icon: Icon(Icons.cases), label: 'Outfits'),
         ]
       ),
       floatingActionButton: ClipOval(
