@@ -5,22 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1db2ed46-43f6-4672-afff-72d6195ad57a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/src/pages/closet_page.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/providers/state_provider.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/shared/extensions/mediaquery_extension.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/widgets/garment_card.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/pages/outfit_detail.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/pages/outfits.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/widgets/outfits_card.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/arm64-v8a/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/arm64-v8a/configure_fingerprint.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/armeabi-v7a/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/armeabi-v7a/configure_fingerprint.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/x86/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/x86/configure_fingerprint.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/x86_64/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/3b2646tl/x86_64/configure_fingerprint.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/custom_lint.log" beforeDir="false" afterPath="$PROJECT_DIR$/custom_lint.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dresscode.iml" beforeDir="false" afterPath="$PROJECT_DIR$/dresscode.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/pages/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +62,9 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="2oA5vCp8mzi1PLc9GnqK7MFa10u" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" />
     <panes>
@@ -92,8 +86,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
-    "flutter.view.tool.window.visible": "true",
-    "git-widget-placeholder": "chore/architecture",
+    "git-widget-placeholder": "Develop",
     "io.flutter.reload.alreadyRun": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Aman/source/ynov_m1/dresscode",
