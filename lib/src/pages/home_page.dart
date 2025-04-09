@@ -1,5 +1,6 @@
 import 'package:dresscode/src/pages/closet_page.dart';
-import 'package:dresscode/src/pages/outfits.dart';
+import 'package:dresscode/src/pages/create_outfits.dart';
+import 'package:dresscode/src/pages/outfits_page.dart';
 import 'package:dresscode/src/providers/state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +40,11 @@ class HomePage extends ConsumerWidget {
               child: Icon(Icons.add, color: Colors.white)
             ),
             onTap: () {
-              // open camera
+              if (indexBottomNavbar == 1) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateOutfitPage()),);
+              } else {
+                // open camera
+              }
             },
           )
         )
