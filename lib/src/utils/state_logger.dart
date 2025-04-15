@@ -12,14 +12,12 @@ class StateLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    debugPrint(
-      '''
+    debugPrint('''
       Provider update: {
         provider: ${provider.name ?? provider.runtimeType},
         oldValue: $previousValue,
         newValue: $newValue
       }
-      '''
-    );
+      ''');
   }
 }

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dresscode/src/shared/extensions/mediaquery_extension.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GarmentCard extends StatelessWidget {
@@ -17,10 +16,10 @@ class GarmentCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         shadowColor: Colors.grey,
         child: CachedNetworkImage(
-          imageUrl: "https://images.threadsmagazine.com/app/uploads/5139/13/11124242/131-turn-of-cloth-01.jpg",
-          errorWidget: (context, url, error) => Icon(Icons.error),
-          fit: BoxFit.fill
-        ),
+            imageUrl:
+                'https://images.threadsmagazine.com/app/uploads/5139/13/11124242/131-turn-of-cloth-01.jpg',
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            fit: BoxFit.fill),
       ),
     );
   }

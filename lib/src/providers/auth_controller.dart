@@ -23,9 +23,9 @@ sealed class Auth with _$Auth {
   const factory Auth.signedOut() = SignedOut;
 
   bool get isAuthenticated => switch (this) {
-    SignedIn() => true,
-    SignedOut() => false,
-  };
+        SignedIn() => true,
+        SignedOut() => false,
+      };
 }
 
 /// A mock of an Authenticated User
@@ -50,12 +50,14 @@ class AuthController extends _$AuthController {
   }
 
   /// Tries to perform a login with the saved token on the persistent storage.
-  /// If _anything_ goes wrong, deletes the internal token and returns a [User.signedOut].
+  /// If _anything_ goes wrong, deletes the internal token and
+  /// returns a [User.signedOut].
   Future<Auth> _loginRecoveryAttempt() {
     try {
       final savedToken = _sharedPreferences.getString(_sharedPrefsKey);
-      if (savedToken == null) throw const UnauthorizedException('No auth token found');
-
+      if (savedToken == null) {
+        throw const UnauthorizedException('No auth token found');
+      }
       return _loginWithToken(savedToken);
     } catch (_, __) {
       _sharedPreferences.remove(_sharedPrefsKey).ignore();
@@ -100,7 +102,8 @@ class AuthController extends _$AuthController {
       }
 
       next.requireValue.map<void>(
-        signedIn: (signedIn) => _sharedPreferences.setString(_sharedPrefsKey, signedIn.token),
+        signedIn: (signedIn) =>
+            _sharedPreferences.setString(_sharedPrefsKey, signedIn.token),
         signedOut: (signedOut) {
           _sharedPreferences.remove(_sharedPrefsKey);
         },

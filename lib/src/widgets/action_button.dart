@@ -2,15 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../hooks/use_side_effect.dart';
-import 'loading_spinner.dart';
+import 'package:dresscode/src/hooks/use_side_effect.dart';
+import 'package:dresscode/src/widgets/loading_spinner.dart';
 
 class ActionButton extends HookWidget {
   const ActionButton({
-    super.key,
     required this.onPressed,
     required this.label,
     required this.icon,
+    super.key,
   });
   final AsyncCallback onPressed;
   final Widget label;
@@ -42,7 +42,8 @@ class ActionButton extends HookWidget {
           _ => pressButton,
         },
         icon: switch (snapshot) {
-          AsyncSnapshot(connectionState: ConnectionState.waiting) => const LoadingSpinner(),
+          AsyncSnapshot(connectionState: ConnectionState.waiting) =>
+            const LoadingSpinner(),
           _ => icon,
         },
         label: label,

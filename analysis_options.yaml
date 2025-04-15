@@ -1,3 +1,30 @@
+include: package:lint/strict.yaml
+
 analyzer:
-  plugins:
-    - custom_lint
+  exclude: [build/**, "**.g.dart", "**.freezed.dart"]
+  language:
+    strict-casts: true
+  errors:
+    sort_pub_dependencies: ignore
+    directives_ordering: ignore
+    depend_on_referenced_packages: ignore
+
+linter:
+  rules:
+    - avoid_init_to_null # variables in flutter are by default set to null
+    - avoid_classes_with_only_static_members
+    - always_put_required_named_parameters_first
+    - always_use_package_imports
+    - avoid_empty_else
+    - avoid_multiple_declarations_per_line
+    - avoid_unnecessary_containers
+    - flutter_style_todos
+    - lines_longer_than_80_chars
+    - prefer_single_quotes
+    - sort_constructors_first
+    - use_string_buffers # string interpolation is not as efficient as using StringBuffer
+    - empty_catches
+    - unnecessary_getters_setters
+    - void_checks
+    - avoid_setters_without_getters
+    - prefer_final_fields

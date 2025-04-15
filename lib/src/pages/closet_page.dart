@@ -11,7 +11,7 @@ class ClosetPage extends ConsumerWidget {
       mainAxisSpacing: 12,
       crossAxisCount: 2,
       children: List.generate(10, (index) {
-        return GarmentCard();
+        return const GarmentCard();
       }),
     );
   }

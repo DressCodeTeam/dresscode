@@ -3,10 +3,9 @@ import 'package:dresscode/src/shared/extensions/mediaquery_extension.dart';
 import 'package:flutter/material.dart';
 
 class OutfitsCard extends StatelessWidget {
+  const OutfitsCard({this.onTap, super.key});
 
   final VoidCallback? onTap;
-
-  const OutfitsCard({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class OutfitsCard extends StatelessWidget {
               crossAxisSpacing: 2,
               children: List.generate(9, (index) {
                 return CachedNetworkImage(
-                  imageUrl: "https://picsum.photos/id/${index + 30}/100",
+                  imageUrl: 'https://picsum.photos/id/${index + 30}/100',
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   fit: BoxFit.cover,
                 );

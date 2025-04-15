@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class SelectableGarmentCard extends StatefulWidget {
-  final String imageUrl;
-  final bool initiallySelected;
-  final Function(bool selected)? onSelectionChanged;
-
   const SelectableGarmentCard({
-    super.key,
     required this.imageUrl,
     this.initiallySelected = false,
     this.onSelectionChanged,
+    super.key,
   });
+
+  final String imageUrl;
+  final bool initiallySelected;
+  final Function(bool selected)? onSelectionChanged;
 
   @override
   State<SelectableGarmentCard> createState() => _SelectableGarmentCardState();

@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
 class GetStartedButton extends StatelessWidget {
-  const GetStartedButton({ super.key });
+  const GetStartedButton({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        minimumSize: WidgetStatePropertyAll(Size(double.infinity, 50)),
-        backgroundColor: WidgetStatePropertyAll(Colors.blue.withOpacity(0.5)),
-        padding: WidgetStatePropertyAll(EdgeInsets.all(16)),
-        shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+        minimumSize: const WidgetStatePropertyAll(Size(double.infinity, 50)),
+        backgroundColor:
+            WidgetStatePropertyAll(Colors.blue.withValues(alpha: 0.5)),
+        padding: const WidgetStatePropertyAll(EdgeInsets.all(16)),
+        shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
       ),
       onPressed: () {},
-      child: Text('Get Started', style: TextStyle(fontSize: 16, color: Colors.black)),
+      child: const Text('Get Started',
+          style: TextStyle(fontSize: 16, color: Colors.black)),
     );
   }
 }
