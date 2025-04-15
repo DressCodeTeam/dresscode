@@ -1,12 +1,11 @@
 import 'package:dresscode/src/pages/outfit_detail.dart';
 import 'package:dresscode/src/widgets/outfits_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class OutfitsPage extends ConsumerWidget {
-  const OutfitsPage ({super.key});
-  
+  const OutfitsPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final List<List<String>> outfits = [

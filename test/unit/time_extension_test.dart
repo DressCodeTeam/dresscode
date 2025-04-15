@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:dresscode/src/shared/extensions/time_extension.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('TimeExtension Tests', () {

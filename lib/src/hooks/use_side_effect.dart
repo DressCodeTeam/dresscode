@@ -9,10 +9,7 @@ typedef SideEffect<T> = ({
 
 SideEffect<T> useSideEffect<T>({bool preserveState = true}) {
   final effect = useState<Future<T>?>(null);
-  final snapshot = useFuture<T?>(
-    effect.value,
-    preserveState: preserveState
-  );
+  final snapshot = useFuture<T?>(effect.value, preserveState: preserveState);
 
   void clear() => effect.value = null;
 

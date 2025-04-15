@@ -1,7 +1,6 @@
 import 'package:dresscode/src/providers/auth_controller.dart';
 import 'package:dresscode/src/widgets/action_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginPage extends ConsumerWidget {
@@ -10,9 +9,9 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> login() => ref.read(authControllerProvider.notifier).login(
-      'myEmail',
-      'myPassword',
-    );
+          'myEmail',
+          'myPassword',
+        );
 
     return Scaffold(
       body: Center(

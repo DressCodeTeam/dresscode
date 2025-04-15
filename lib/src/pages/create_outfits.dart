@@ -11,7 +11,7 @@ class CreateOutfitPage extends StatefulWidget {
 class _CreateOutfitPageState extends State<CreateOutfitPage> {
   final List<String> allGarments = List.generate(
     12,
-        (i) => 'https://picsum.photos/id/${i + 10}/200',
+    (i) => 'https://picsum.photos/id/${i + 10}/200',
   );
 
   final Set<int> selectedIndices = {};
@@ -28,16 +28,18 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
 
   void saveOutfit() {
     final selectedGarments =
-    selectedIndices.map((i) => allGarments[i]).toList();
+        selectedIndices.map((i) => allGarments[i]).toList();
     // Tu peux maintenant les utiliser pour créer un outfit
-    print("Outfit saved with ${selectedGarments.length} vêtements");
+    debugPrint('Outfit saved with ${selectedGarments.length} vêtements');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Crée ton propre Outfit'),
-      centerTitle: true,),
+      appBar: AppBar(
+        title: const Text('Crée ton propre Outfit'),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: GridView.builder(
@@ -63,10 +65,12 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
           onPressed: saveOutfit,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 14),
-            backgroundColor:  Color(0xFF7861FF),
+            backgroundColor: const Color(0xFF7861FF),
           ),
-          child: const Text('Enregistrer l’Outfit',
-            style: TextStyle(color: Colors.white),),
+          child: const Text(
+            'Enregistrer l’Outfit',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );

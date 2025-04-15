@@ -17,12 +17,12 @@ GoRouter goRouter(Ref ref) {
     ..onDispose(isAuth.dispose)
     // i'm listening only for the isAuthenticated value
     ..listen(
-      authControllerProvider.select((value) => value.whenData((value) => value.isAuthenticated)),
-      (_, next) {
-        isAuth.value = next; // next contains the new value of isAuthenticated
-      }
-    );
-  
+        authControllerProvider.select(
+            (value) => value.whenData((value) => value.isAuthenticated)),
+        (_, next) {
+      isAuth.value = next; // next contains the new value of isAuthenticated
+    });
+
   final router = GoRouter(
     navigatorKey: routerKey,
     refreshListenable: isAuth,

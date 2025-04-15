@@ -2,9 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class OutfitDetailPage extends StatelessWidget {
-  final List<String> imageUrls;
+  const OutfitDetailPage({
+    required this.imageUrls,
+    super.key,
+  });
 
-  const OutfitDetailPage({super.key, required this.imageUrls});
+  final List<String> imageUrls;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class OutfitDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: ElevatedButton.icon(
           icon: const Icon(Icons.delete),
-          label: const Text("Supprimer cet outfit"),
+          label: const Text('Supprimer cet outfit'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
