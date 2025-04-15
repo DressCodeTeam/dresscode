@@ -3,11 +3,8 @@ import 'package:dresscode/src/shared/extensions/mediaquery_extension.dart';
 import 'package:flutter/material.dart';
 
 class OutfitsCard extends StatelessWidget {
-  const OutfitsCard({
-    this.onTap,
-    super.key
-  });
-  
+  const OutfitsCard({this.onTap, super.key});
+
   final VoidCallback? onTap;
 
   @override
