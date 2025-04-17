@@ -3,7 +3,7 @@
 [![CI Status][ci-badge]][ci-workflow]
 [![License: MIT][license-badge]][license-description]
 
-[ci-badge]: https://github.com/DressCodeTeam/dresscode/actions/workflows/ci.yml/badge.svg
+[ci-badge]: https://github.com/DressCodeTeam/dresscode/actions/workflows/ci.yaml/badge.svg
 [ci-workflow]: https://github.com/DressCodeTeam/dresscode/actions/workflows/ci.yml
 [license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-description]: https://opensource.org/licenses/MIT
