@@ -1,7 +1,12 @@
 # dresscode
 
-[![CI Status](https://github.com/DressCodeTeam/dresscode/core/actions/workflows/ci.yml/badge.svg)](https://github.com/DressCodeTeam/dresscode/core/actions/workflows/ci.yml/badge.svg)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CI Status][ci-badge]][ci-workflow]
+[![License: MIT][license-badge]][license-description]
+
+[ci-badge]: https://github.com/DressCodeTeam/dresscode/actions/workflows/ci.yml/badge.svg
+[ci-workflow]: https://github.com/DressCodeTeam/dresscode/actions/workflows/ci.yml
+[license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
+[license-description]: https://opensource.org/licenses/MIT
 
 ## Description
 Dresscode (temporary name) is a digital, AI-powered wardrobe organizer designed to designed to extend

@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1db2ed46-43f6-4672-afff-72d6195ad57a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/src/pages/create_outfits.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/widgets/selectable_garment_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/arm64-v8a/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/arm64-v8a/configure_fingerprint.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/armeabi-v7a/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/armeabi-v7a/configure_fingerprint.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/x86/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/x86/configure_fingerprint.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/x86_64/configure_fingerprint.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/.cxx/Debug/1c3a7354/x86_64/configure_fingerprint.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/pages/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/pages/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/pages/outfits.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/pages/outfits_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,26 +71,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Develop&quot;,
-    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aman/source/ynov_m1/dresscode&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.18154761&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Flutter.main.dart.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "docs/readme-and-roadmap",
+    "io.flutter.reload.alreadyRun": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Aman/source/ynov_m1/dresscode",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.18154761",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
