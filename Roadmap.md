@@ -14,4 +14,4 @@ instance);
 - [ ] Save a garment within your digital wardrobe;
 - [ ] Visual cataloging system for clothing items;
 - [ ] Manually create an outfit and save it
-- [ ] Deployment on the Play Store and App Store
+- [ ] Deployment on the Play Store, App Store, Product Hunt
