@@ -1,3 +1,5 @@
+import 'package:dresscode/src/api/api_client.dart';
+import 'package:dresscode/src/models/garment.dart';
 import 'package:dresscode/src/widgets/selectable_garment_card.dart';
 import 'package:flutter/material.dart';
 
@@ -9,12 +11,32 @@ class CreateOutfitPage extends StatefulWidget {
 }
 
 class _CreateOutfitPageState extends State<CreateOutfitPage> {
-  final List<String> allGarments = List.generate(
-    12,
-    (i) => 'https://picsum.photos/id/${i + 10}/200',
-  );
+  // final List<String> allGarments = List.generate(
+  //   12,
+  //   (i) => 'https://picsum.photos/id/${i + 10}/200',
+  // );
 
+  // final Set<int> selectedIndices = {};
+  final ApiClient apiClient = ApiClient();
+  List<Garment> garments = [];
   final Set<int> selectedIndices = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadGarments();
+  }
+
+  Future<void> _loadGarments() async {
+    try {
+      final fetchedGarments = await apiClient.fetchGarments();
+      setState(() {
+        garments = fetchedGarments;
+      });
+    } catch (e) {
+      debugPrint('Erreur lors du chargement des vêtements : $e');
+    }
+  }
 
   void handleSelection(int index, bool selected) {
     setState(() {
@@ -28,8 +50,7 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
 
   void saveOutfit() {
     final selectedGarments =
-        selectedIndices.map((i) => allGarments[i]).toList();
-    // Tu peux maintenant les utiliser pour créer un outfit
+        selectedIndices.map((i) => garments[i]).toList();
     debugPrint('Outfit saved with ${selectedGarments.length} vêtements');
   }
 
@@ -43,7 +64,7 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: GridView.builder(
-          itemCount: allGarments.length,
+          itemCount: garments.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 12,
@@ -51,7 +72,7 @@ class _CreateOutfitPageState extends State<CreateOutfitPage> {
           ),
           itemBuilder: (context, index) {
             return SelectableGarmentCard(
-              imageUrl: allGarments[index],
+              imageUrl: garments[index].idImage.toString(),
               initiallySelected: selectedIndices.contains(index),
               onSelectionChanged: (selected) =>
                   handleSelection(index, selected),
