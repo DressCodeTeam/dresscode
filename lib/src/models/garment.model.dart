@@ -55,5 +55,4 @@ class Garment extends BaseModel {
       'updated_at': updatedAt
     };
   }
-
 }
