@@ -9,18 +9,18 @@ class GarmentsService {
 
   Future<List<Garment>> getGarments() async {
     final response = await _apiClient.get(ApiConstants.findAllGarmentEndpoint);
-    final data = response.data as List<Map<String, dynamic>>;
-
-    return data
-      .map((garment) => Garment.fromJSON(garment))
-      .toList();
+    if (response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      return data.map((garment) => Garment.fromJSON(garment as Map<String, dynamic>)).toList();
+    } else {
+      throw Exception(
+          'Failed to load garments from API{${response.statusCode}}');
+    }
   }
 
   Future<Garment> createGarment(Garment garment) async {
-    final response = await _apiClient.post(
-      ApiConstants.createGarmentEndpoint,
-      data: garment.toJSON()
-    );
+    final response = await _apiClient.post(ApiConstants.createGarmentEndpoint,
+        data: garment.toJSON());
     final data = response.data as Map<String, dynamic>;
 
     return Garment.fromJSON(data);

@@ -18,40 +18,47 @@ class HomePage extends ConsumerWidget {
     ];
 
     return Scaffold(
-        appBar: AppBar(title: const Text('DressCode')),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: indexBottomNavbar,
-            onTap: (index) {
-              ref.read(indexBottomNavbarProvider.notifier).state = index;
+      appBar: AppBar(title: const Text('DressCode')),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: indexBottomNavbar,
+        onTap: (index) {
+          ref.read(indexBottomNavbarProvider.notifier).state = index;
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Garde-robe'),
+          BottomNavigationBarItem(icon: Icon(Icons.cases), label: 'Outfits'),
+        ],
+      ),
+      floatingActionButton: ClipOval(
+        child: Material(
+          color: const Color(0xFF7861FF),
+          elevation: 10,
+          child: InkWell(
+            child: SizedBox(
+              width: 56,
+              height: 56,
+              child: Icon(
+                indexBottomNavbar == 1 ? Icons.checkroom : Icons.add,
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              if (indexBottomNavbar == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateOutfitPage(),
+                  ),
+                );
+              } else {
+                // open camera
+              }
             },
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home), label: 'Garde-robe'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.cases), label: 'Outfits'),
-            ]),
-        floatingActionButton: ClipOval(
-            child: Material(
-                color: const Color(0xFF7861FF),
-                elevation: 10,
-                child: InkWell(
-                  child: const SizedBox(
-                      width: 56,
-                      height: 56,
-                      child: Icon(Icons.add, color: Colors.white)),
-                  onTap: () {
-                    if (indexBottomNavbar == 1) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CreateOutfitPage()),
-                      );
-                    } else {
-                      // open camera
-                    }
-                  },
-                ))),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: pages[indexBottomNavbar]);
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: pages[indexBottomNavbar],
+    );
   }
 }

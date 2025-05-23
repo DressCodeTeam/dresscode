@@ -1,13 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:dresscode/src/constants/api.dart';
 import 'package:dresscode/src/services/base.service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService extends BaseService {
-
-  ApiService() {
+  final Ref ref;
+  
+  ApiService(this.ref) {
     _dio = Dio(
       BaseOptions(
-        baseUrl: ApiConstants.baseUrl, // Replace with your base URL
+        baseUrl: ApiConstants.baseUrl,
         connectTimeout: const Duration(milliseconds: 50000),
         receiveTimeout: const Duration(milliseconds: 50000),
         headers: {
@@ -16,9 +19,33 @@ class ApiService extends BaseService {
         },
       ),
     );
+
+    // Add token
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await _getToken();
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          return handler.next(options);
+        },
+        onError: (error, handler) async {
+          if (error.response?.statusCode == 401) {
+            // Gérer l'expiration du token ici si nécessaire
+          }
+          return handler.next(error);
+        },
+      ),
+    );
   }
-  
-  late Dio _dio;
+
+  late final Dio _dio;
+
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('auth_token');
+  }
 
   // Handle errors
   void _handleError(DioException error) {
@@ -28,31 +55,27 @@ class ApiService extends BaseService {
       case DioExceptionType.receiveTimeout:
         throw Exception('Connection timeout');
       case DioExceptionType.badResponse:
-        throw Exception('Received invalid SC: ${error.response?.statusCode}');
+        throw Exception('Received invalid status code: ${error.response?.statusCode}');
       case DioExceptionType.cancel:
         throw Exception('Request to API server was cancelled');
       case DioExceptionType.unknown:
         throw Exception('Connection to API server failed: ${error.message}');
       default:
-        return;
+        throw Exception('An unknown error occurred');
     }
   }
 
   // GET request
-  Future<Response> get(
-    String endpoint,
-    {
-      Map<String, dynamic>? data,
-      Map<String, dynamic>? queryParams
-    }
-  ) async {
+  Future<Response> get(String endpoint, {
+    Map<String, dynamic>? data, 
+    Map<String, dynamic>? queryParams,
+  }) async {
     try {
-      final response = await _dio.get(
+      return await _dio.get(
         endpoint,
         data: data,
         queryParameters: queryParams,
       );
-      return response;
     } on DioException catch (e) {
       _handleError(e);
       rethrow;
@@ -60,20 +83,18 @@ class ApiService extends BaseService {
   }
 
   // POST request
-  Future<Response> post(
-    String endpoint,
-    {
-      Map<String, dynamic>? data,
-      Map<String, dynamic>? queryParams
-    }
-  ) async {
+  Future<Response> post(String endpoint, {
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+    Options? options,
+  }) async {
     try {
-      final response = await _dio.post(
+      return await _dio.post(
         endpoint,
         data: data,
-        queryParameters: queryParams
+        queryParameters: queryParams,
+        options: options,
       );
-      return response;
     } on DioException catch (e) {
       _handleError(e);
       rethrow;
@@ -81,20 +102,16 @@ class ApiService extends BaseService {
   }
 
   // PUT request
-  Future<Response> put(
-    String endpoint,
-    {
-      Map<String, dynamic>? data,
-      Map<String, dynamic>? queryParams
-    }
-  ) async {
+  Future<Response> put(String endpoint, {
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+  }) async {
     try {
-      final response = await _dio.put(
+      return await _dio.put(
         endpoint,
         data: data,
-        queryParameters: queryParams
+        queryParameters: queryParams,
       );
-      return response;
     } on DioException catch (e) {
       _handleError(e);
       rethrow;
@@ -102,20 +119,16 @@ class ApiService extends BaseService {
   }
 
   // DELETE request
-  Future<Response> delete(
-    String endpoint,
-    {
-      Map<String, dynamic>? data,
-      Map<String, dynamic>? queryParams
-    }
-  ) async {
+  Future<Response> delete(String endpoint, {
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+  }) async {
     try {
-      final response = await _dio.delete(
+      return await _dio.delete(
         endpoint,
         data: data,
-        queryParameters: queryParams
+        queryParameters: queryParams,
       );
-      return response;
     } on DioException catch (e) {
       _handleError(e);
       rethrow;

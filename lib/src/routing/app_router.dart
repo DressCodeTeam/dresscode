@@ -1,6 +1,6 @@
 import 'package:dresscode/src/pages/home_page.dart';
 import 'package:dresscode/src/pages/login_page.dart';
-import 'package:dresscode/src/providers/auth_controller.dart';
+import 'package:dresscode/src/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,23 +11,14 @@ part 'app_router.g.dart';
 @riverpod
 GoRouter goRouter(Ref ref) {
   final routerKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
-  final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
 
-  ref
-    ..onDispose(isAuth.dispose)
-    // i'm listening only for the isAuthenticated value
-    ..listen(
-        authControllerProvider.select(
-            (value) => value.whenData((value) => value.isAuthenticated)),
-        (_, next) {
-      isAuth.value = next; // next contains the new value of isAuthenticated
-    });
+  // Utilisation du provider pour vérifier si l'utilisateur est authentifié
+  final isAuthenticated = ref.watch(isAuthenticatedProvider);
 
   final router = GoRouter(
     navigatorKey: routerKey,
-    refreshListenable: isAuth,
     debugLogDiagnostics: true,
-    initialLocation: '/',
+    initialLocation: isAuthenticated ? '/' : '/login',
     routes: [
       GoRoute(
         path: '/',
@@ -36,18 +27,21 @@ GoRouter goRouter(Ref ref) {
       GoRoute(
         path: '/login',
         builder: (_, __) => const LoginPage(),
-      )
+      ),
     ],
     redirect: (context, state) {
-      if (isAuth.value.unwrapPrevious().hasError) return '/login';
-      if (isAuth.value.isLoading || !isAuth.value.hasValue) return '/login';
+      final isLoggingIn = state.uri.path == '/login';
 
-      final auth = isAuth.value.requireValue;
+      // Redirection en fonction de l'état d'authentification
+      if (!isAuthenticated && !isLoggingIn) {
+        return '/login';
+      }
 
-      final isLoggingIn = (state.uri.path == '/login');
-      if (isLoggingIn) return auth ? '/' : null;
+      if (isAuthenticated && isLoggingIn) {
+        return '/';
+      }
 
-      return auth ? null : '/login';
+      return null;
     },
   );
 
