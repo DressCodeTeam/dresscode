@@ -1,5 +1,4 @@
 import 'package:dresscode/src/models/garment.model.dart';
-import 'package:dresscode/src/models/outfit.model.dart';
 import 'package:dresscode/src/providers/garment_providers.dart';
 import 'package:dresscode/src/providers/outfit_providers.dart';
 import 'package:dresscode/src/widgets/selectable_garment_card.dart';
@@ -15,7 +14,7 @@ class CreateOutfitPage extends ConsumerStatefulWidget {
 
 class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
   final Set<int> selectedIndices = {};
-  final int minimumGarments = 3; // Nombre minimum de vêtements requis
+  final int minimumGarments = 2; // Nombre minimum de vêtements requis
 
   void handleSelection(int index, bool selected) {
     setState(() {
@@ -37,17 +36,25 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
       return;
     }
 
-    final selectedGarments =
-        selectedIndices.map((i) => garments[i].id).toList();
+    // Récupérer les IDs des vêtements sélectionnés
+    final selectedGarments = selectedIndices
+      .map((i) => garments[i])
+      .where((g) => g.id != null)
+      .toList();
+
+      print('════════════════════════════════════════════');
+  print('Vêtements sélectionnés:');
+  selectedGarments.forEach((g) => print('- ID: ${g.id}, Image: ${g.imageUrl}'));
+  print('════════════════════════════════════════════');
+
+
 
     try {
+      // Appeler le service pour créer un Outfit
       final outfitsService = ref.read(outfitsServiceProvider);
       await outfitsService.createOutfit(
-        Outfit(
-          id: -1,
-          styleId: 1,
-          createdAt: DateTime.now(),
-        ),
+        1, // Style par défaut
+        selectedGarments,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -58,6 +65,9 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
       setState(() {
         selectedIndices.clear();
       });
+
+      // Retourner à la page précédente
+      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erreur lors de l\'enregistrement : $e')),
@@ -91,10 +101,9 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
             itemBuilder: (context, index) {
               final garment = garments[index];
               return SelectableGarmentCard(
-                imageUrl: garment.imageUrl.toString(),
+                imageUrl: garment.imageUrl,
                 initiallySelected: selectedIndices.contains(index),
-                onSelectionChanged: (selected) =>
-                    handleSelection(index, selected),
+                onSelectionChanged: (selected) => handleSelection(index, selected),
               );
             },
           ),
