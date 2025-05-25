@@ -18,68 +18,63 @@ class HomePage extends ConsumerWidget {
     ];
 
     return Scaffold(
-      body: pages[indexBottomNavbar],
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          height: 56,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          margin: const EdgeInsets.symmetric(horizontal: 120, vertical: 16),
-          decoration: BoxDecoration(
-            color: AppColors.primaryColor.withAlpha(180),
-            borderRadius: const BorderRadius.all(Radius.circular(24)),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryColor.withAlpha(100),
-                offset: const Offset(0, 20),
-                blurRadius: 20
-              )
-            ]
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () => ref.read(indexBottomNavbarProvider.notifier)
-                                    .state = 0,
-                icon: const Icon(Icons.door_sliding),
-                iconSize: 30,
-                tooltip: 'Garde-robe',
-                color: indexBottomNavbar == 0
-                  ? AppColors.secondaryColor
-                  : AppColors.disabledColor,
+      backgroundColor: AppColors.disabledColor,
+      body: Stack(
+        children: [
+          // Pages en plein écran
+          pages[indexBottomNavbar],
+          
+          // Navigation flottante pour récupérer un peu d'espace
+          // en bas de l'écran.
+          Positioned(
+            bottom: 16,
+            left: 120,
+            right: 120,
+            child: SafeArea(
+              child: Container(
+                height: 56,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor.withAlpha(180),
+                  borderRadius: const BorderRadius.all(Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primaryColor.withAlpha(100),
+                      offset: const Offset(0, 20),
+                      blurRadius: 20
+                    )
+                  ]
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () => ref.read(indexBottomNavbarProvider.notifier)
+                                          .state = 0,
+                      icon: const Icon(Icons.door_sliding),
+                      iconSize: 30,
+                      tooltip: 'Garde-robe',
+                      color: indexBottomNavbar == 0
+                        ? AppColors.secondaryColor
+                        : AppColors.disabledColor,
+                    ),
+                    IconButton(
+                      onPressed: () => ref.read(indexBottomNavbarProvider.notifier)
+                                          .state = 1,
+                      icon: const Icon(Icons.checkroom),
+                      tooltip: 'Outfits',
+                      color: indexBottomNavbar == 1
+                        ? AppColors.secondaryColor
+                        : Colors.white,
+                      iconSize: 30,
+                    ),
+                  ],
+                ),
               ),
-              IconButton(
-                onPressed: () => ref.read(indexBottomNavbarProvider.notifier)
-                                    .state = 1,
-                icon: const Icon(Icons.checkroom),
-                tooltip: 'Outfits',
-                color: indexBottomNavbar == 1
-                  ? AppColors.secondaryColor
-                  : Colors.white,
-                iconSize: 30,
-              ),
-            ],
+            ),
           ),
-        )
+        ],
       ),
-      
-      
-      // BottomNavigationBar(
-      //   currentIndex: indexBottomNavbar,
-      //   onTap: (index) {
-      //     ref.read(indexBottomNavbarProvider.notifier).state = index;
-      //   },
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.checkroom),
-      //       label: 'Garde-robe'
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.door_sliding),
-      //       label: 'Outfits'
-      //     ),
-      //   ],
-      // ),
       floatingActionButton: ClipOval(
         child: Material(
           color: AppColors.primaryColor.withAlpha(180),
@@ -95,8 +90,6 @@ class HomePage extends ConsumerWidget {
               ),
             ),
             onTap: () {
-              // On the outfit page, the button redirect to the outfit creation
-              // page, on the wardrobe one, it redirects to the camera.
               if (indexBottomNavbar == 1) {
                 Navigator.push(
                   context,

@@ -4,6 +4,7 @@ import 'package:dresscode/src/models/garment.model.dart';
 import 'package:dresscode/src/providers/garment_providers.dart';
 import 'package:dresscode/src/widgets/category_button.dart';
 import 'package:dresscode/src/widgets/garment_card.dart';
+import 'package:dresscode/src/widgets/profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -15,22 +16,22 @@ class ClosetPage extends HookConsumerWidget {
     final garmentEffect = useSideEffect<Garment>();
     final garmentService = ref.watch(garmentServiceProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Garde-robe',
-          style: TextStyle(color: Colors.white)
-        ),
-        backgroundColor: AppColors.primaryColor.withAlpha(200),
-      ),
-      body: Padding(
+    return SafeArea(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Column(
           children: [
+            // Profile
+            const ProfileStatsCard(
+              userName: 'John Doe',
+              totalClothes: 3,
+              totalOutfits: 1,
+            ),
+            const SizedBox(height: 16),
+
             // Categories horizontally scrollable
             SizedBox(
-              height: 100,
+              height: 90,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -49,24 +50,9 @@ class ClosetPage extends HookConsumerWidget {
                       categoryName: 'Hauts',
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: CategoryCircle(
-                      imagePath: 'assets/images/bottoms.png',
-                      categoryName: 'Bas',
-                    ),
-                  ),
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 12),
-                  //   child: CategoryCircle(
-                  //     icon: Icons.local_laundry_service,
-                  //     categoryName: 'Polos',
-                  //   ),
-                  // ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
 
             // Display garmentEffect status
             garmentEffect.snapshot.when(
