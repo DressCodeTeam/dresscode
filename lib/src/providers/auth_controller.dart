@@ -1,10 +1,106 @@
-import 'package:dresscode/src/shared/extensions/time_extension.dart';
+import 'package:dresscode/src/models/user_model.dart';
+import 'package:dresscode/src/providers/auth_state.dart';
+import 'package:dresscode/src/services/auth_service.dart';
 import 'dart:async';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'auth_controller.freezed.dart';
+class AuthController extends StateNotifier<AuthState> {
+  final AuthService _authService;
+  final SharedPreferences _prefs;
+
+  AuthController(this._authService, this._prefs) : super(const AuthState()) {
+    // Vérifier si un token existe au démarrage
+    _initializeAuth();
+  }
+
+  Future<void> _initializeAuth() async {
+    final token = _prefs.getString('auth_token');
+    if (token != null) {
+      state = state.copyWith(isLoading: true);
+      try {
+        // Récupérer les informations de l'utilisateur avec le token
+        final userData = await _authService.getUserInfo(token);
+        final user = User.fromJson(userData);
+        
+        state = state.copyWith(
+          isAuthenticated: true,
+          user: user,
+          token: token,
+          isLoading: false,
+        );
+      } catch (e) {
+        // Token invalide ou expiré
+        _prefs.remove('auth_token');
+        state = state.copyWith(
+          isAuthenticated: false,
+          user: null,
+          token: null,
+          isLoading: false,
+          errorMessage: e.toString(),
+        );
+      }
+    }
+  }
+
+  Future<bool> login(String email, String password) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    
+    try {
+      final token = await _authService.login(email, password);
+      await _prefs.setString('auth_token', token);
+      // final userInfo = await _authService.getUserInfo(token);
+      state = state.copyWith(
+        isAuthenticated: true,
+        token: token,
+        //  user: User.fromJson(userInfo),
+        isLoading: false,
+      );
+      return true;
+
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> register(String name, String email, String password) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    
+    try {
+      final success = await _authService.register(name, email, password);
+      if (success) {
+        await login(email, password);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+      return false;
+    }
+  }
+
+  void logout() {
+    _prefs.remove('auth_token');
+    state = const AuthState();
+  }
+
+  // Accès aux données courantes
+  bool get isAuthenticated => state.isAuthenticated;
+  User? get currentUser => state.user;
+  String? get token => state.token;
+  bool get isLoading => state.isLoading;
+  String? get errorMessage => state.errorMessage;
+}
+
+
+/*part 'auth_controller.freezed.dart';
 part 'auth_controller.g.dart';
 
 /// Making the class "sealed" prevent extensions outside of this file
@@ -120,3 +216,4 @@ class UnauthorizedException implements Exception {
 
 /// Mock of the duration of a network request
 final networkRoundTripTime = 2.seconds;
+*/
