@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dresscode/src/constants/colors.dart';
 import 'package:dresscode/src/shared/extensions/mediaquery_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -29,16 +30,16 @@ class OutfitsCard extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 4),
               elevation: 3,
               clipBehavior: Clip.antiAlias,
-              shadowColor: Colors.grey,
+              shadowColor: const Color(0xFFD8C3A5),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(
-                  top: 20.0, // Espace en haut
-                  left: 8.0, // Espace à gauche
-                  right: 8.0, // Espace à droite
-                  bottom: 8.0, // Espace en bas
+                  top: 20.0,
+                  left: 8.0,
+                  right: 8.0,
+                  bottom: 8.0,
                 ),
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -63,8 +64,8 @@ class OutfitsCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
               style,
-              style: TextStyle(
-                color: Colors.grey.shade700,
+              style: const TextStyle(
+                color: AppColors.textColor,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),

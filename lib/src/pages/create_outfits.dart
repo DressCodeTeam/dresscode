@@ -42,10 +42,10 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
       .where((g) => g.id != null)
       .toList();
 
+      debugPrint('════════════════════════════════════════════');
+      debugPrint('Vêtements sélectionnés:');
+      selectedGarments.forEach((g) => print('- ID: ${g.id}, Image: ${g.imageUrl}'));
       print('════════════════════════════════════════════');
-  print('Vêtements sélectionnés:');
-  selectedGarments.forEach((g) => print('- ID: ${g.id}, Image: ${g.imageUrl}'));
-  print('════════════════════════════════════════════');
 
 
 
@@ -123,7 +123,7 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
                 : Colors.grey,
           ),
           child: const Text(
-            'Enregistrer l’Outfit',
+            "Enregistrer l'outfit",
             style: TextStyle(color: Colors.white),
           ),
         ),

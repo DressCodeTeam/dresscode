@@ -1,3 +1,4 @@
+import 'package:dresscode/src/constants/colors.dart';
 import 'package:dresscode/src/pages/closet_page.dart';
 import 'package:dresscode/src/pages/create_outfits.dart';
 import 'package:dresscode/src/pages/outfits_page.dart';
@@ -14,35 +15,88 @@ class HomePage extends ConsumerWidget {
     final pages = [
       const ClosetPage(),
       const OutfitsPage(),
-      const Center(child: Text('Outfit pages')),
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('DressCode')),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: indexBottomNavbar,
-        onTap: (index) {
-          ref.read(indexBottomNavbarProvider.notifier).state = index;
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Garde-robe'),
-          BottomNavigationBarItem(icon: Icon(Icons.cases), label: 'Outfits'),
-        ],
+      body: pages[indexBottomNavbar],
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: 56,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          margin: const EdgeInsets.symmetric(horizontal: 120, vertical: 16),
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor.withAlpha(180),
+            borderRadius: const BorderRadius.all(Radius.circular(24)),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryColor.withAlpha(100),
+                offset: const Offset(0, 20),
+                blurRadius: 20
+              )
+            ]
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () => ref.read(indexBottomNavbarProvider.notifier)
+                                    .state = 0,
+                icon: const Icon(Icons.door_sliding),
+                iconSize: 30,
+                tooltip: 'Garde-robe',
+                color: indexBottomNavbar == 0
+                  ? AppColors.secondaryColor
+                  : AppColors.disabledColor,
+              ),
+              IconButton(
+                onPressed: () => ref.read(indexBottomNavbarProvider.notifier)
+                                    .state = 1,
+                icon: const Icon(Icons.checkroom),
+                tooltip: 'Outfits',
+                color: indexBottomNavbar == 1
+                  ? AppColors.secondaryColor
+                  : Colors.white,
+                iconSize: 30,
+              ),
+            ],
+          ),
+        )
       ),
+      
+      
+      // BottomNavigationBar(
+      //   currentIndex: indexBottomNavbar,
+      //   onTap: (index) {
+      //     ref.read(indexBottomNavbarProvider.notifier).state = index;
+      //   },
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.checkroom),
+      //       label: 'Garde-robe'
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.door_sliding),
+      //       label: 'Outfits'
+      //     ),
+      //   ],
+      // ),
       floatingActionButton: ClipOval(
         child: Material(
-          color: const Color(0xFF7861FF),
+          color: AppColors.primaryColor.withAlpha(180),
           elevation: 10,
           child: InkWell(
-            child: SizedBox(
+            child: const SizedBox(
               width: 56,
               height: 56,
               child: Icon(
-                indexBottomNavbar == 1 ? Icons.checkroom : Icons.add,
+                Icons.add,
                 color: Colors.white,
+                size: 30,
               ),
             ),
             onTap: () {
+              // On the outfit page, the button redirect to the outfit creation
+              // page, on the wardrobe one, it redirects to the camera.
               if (indexBottomNavbar == 1) {
                 Navigator.push(
                   context,
@@ -51,14 +105,12 @@ class HomePage extends ConsumerWidget {
                   ),
                 );
               } else {
-                // open camera
+                // open camera.
               }
             },
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: pages[indexBottomNavbar],
     );
   }
 }

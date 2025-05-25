@@ -45,6 +45,7 @@ dependencies:
   dio: ^5.8.0+1
   hooks_riverpod: ^2.6.1
   freezed_annotation: ^2.4.4
+  rive: ^0.13.20
 
 dev_dependencies:
   flutter_test:
@@ -70,13 +71,30 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/quicksand/Quicksand-Light.ttf
+          weight: 300
+        - asset: assets/fonts/quicksand/Quicksand-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/quicksand/Quicksand-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/quicksand/Quicksand-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/quicksand/Quicksand-Bold.ttf
+          weight: 700
+
   assets:
     - shorebird.yaml
-  uses-material-design: true
+    - assets/icons/animated_icon_set_-_1_color.riv
+    - assets/icons/icons_set_2.riv
+    - assets/icons/icons_set_3.riv
 
   # To add assets to your application, add an assets section, like this:
   # assets:

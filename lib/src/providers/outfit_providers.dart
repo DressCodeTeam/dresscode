@@ -10,13 +10,14 @@ final outfitsServiceProvider = Provider<OutfitsService>(
   (ref) => OutfitsService(ref.read(apiClientProvider)),
 );
 
-final outfitsProvider = FutureProvider<List<Outfit>>((ref) async {
+final outfitsProvider = FutureProvider<List<Outfit>>((ref) {
   final outfitsService = ref.watch(outfitsServiceProvider);
   return outfitsService.getOutfits();
 });
 
-final createOutfitProvider = FutureProvider.family<Outfit, Map<String, dynamic>>(
-  (ref, data) async {
+final createOutfitProvider = FutureProvider
+  .family< Outfit, Map<String, dynamic> >(
+  (ref, data) {
     final outfitsService = ref.watch(outfitsServiceProvider);
     return outfitsService.createOutfit(
       data['style'] as int,
@@ -26,7 +27,7 @@ final createOutfitProvider = FutureProvider.family<Outfit, Map<String, dynamic>>
 );
 
 final outfitByIdProvider = FutureProvider.family<List<Garment>, int>(
-  (ref, id) async {
+  (ref, id) {
     final outfitsService = ref.watch(outfitsServiceProvider);
     return outfitsService.getOutfitById(id);
   },

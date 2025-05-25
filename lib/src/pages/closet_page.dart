@@ -1,3 +1,4 @@
+import 'package:dresscode/src/constants/colors.dart';
 import 'package:dresscode/src/hooks/use_side_effect.dart';
 import 'package:dresscode/src/models/garment.model.dart';
 import 'package:dresscode/src/providers/garment_providers.dart';
@@ -13,7 +14,14 @@ class ClosetPage extends HookConsumerWidget {
     final garmentService = ref.watch(garmentServiceProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Garments')),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Garde-robe',
+          style: TextStyle(color: Colors.white)
+        ),
+        backgroundColor: AppColors.primaryColor.withAlpha(200),
+      ),
       body: Column(
         children: [
           // Display garmentEffect status

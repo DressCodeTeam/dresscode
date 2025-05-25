@@ -1,4 +1,4 @@
-import 'package:dresscode/src/models/outfit.model.dart';
+import 'package:dresscode/src/constants/colors.dart';
 import 'package:dresscode/src/pages/outfit_detail.dart';
 import 'package:dresscode/src/providers/outfit_providers.dart';
 import 'package:dresscode/src/widgets/outfits_card.dart';
@@ -14,8 +14,12 @@ class OutfitsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mes Outfits'),
         centerTitle: true,
+        title: const Text(
+          'Mes outfits',
+          style: TextStyle(color: Colors.white)
+        ),
+        backgroundColor: AppColors.primaryColor.withAlpha(200),
       ),
       body: outfitsAsyncValue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -55,7 +59,6 @@ class OutfitsPage extends ConsumerWidget {
                       MaterialPageRoute(
                         builder: (_) => OutfitDetailPage(
                           imageUrls: imageUrls,
-                          // style: outfit.style,
                         ),
                       ),
                     );

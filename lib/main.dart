@@ -10,7 +10,7 @@ void main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   runApp(
     ProviderScope(
-      observers: [StateLogger()],
+      observers: const [StateLogger()],
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
