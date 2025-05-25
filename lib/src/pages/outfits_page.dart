@@ -40,7 +40,7 @@ class OutfitsPage extends ConsumerWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 0.7, // Ajustez ce ratio selon vos besoins
+                childAspectRatio: 0.7,
               ),
               itemCount: outfits.length,
               itemBuilder: (context, index) {

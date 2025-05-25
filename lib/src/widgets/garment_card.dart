@@ -3,7 +3,11 @@ import 'package:dresscode/src/shared/extensions/mediaquery_extension.dart';
 import 'package:flutter/material.dart';
 
 class GarmentCard extends StatelessWidget {
-  const GarmentCard();
+  const GarmentCard({
+    required this.imageUrl
+  });
+
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +20,10 @@ class GarmentCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         shadowColor: Colors.grey,
         child: CachedNetworkImage(
-            imageUrl:
-                'https://images.threadsmagazine.com/app/uploads/5139/13/11124242/131-turn-of-cloth-01.jpg',
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-            fit: BoxFit.fill),
+          imageUrl: imageUrl,
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          fit: BoxFit.fill
+        ),
       ),
     );
   }

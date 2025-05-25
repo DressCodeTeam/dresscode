@@ -95,6 +95,7 @@ flutter:
     - assets/icons/animated_icon_set_-_1_color.riv
     - assets/icons/icons_set_2.riv
     - assets/icons/icons_set_3.riv
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

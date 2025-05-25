@@ -105,7 +105,7 @@ class HomePage extends ConsumerWidget {
                   ),
                 );
               } else {
-                // open camera.
+                // open camera
               }
             },
           ),

@@ -11,10 +11,14 @@ class GarmentsService {
     final response = await _apiClient.get(ApiConstants.findAllGarmentEndpoint);
     if (response.statusCode == 200) {
       final data = response.data as List<dynamic>;
-      return data.map((garment) => Garment.fromJSON(garment as Map<String, dynamic>)).toList();
+      return data.map(
+        (garment) => Garment.fromJSON(
+          garment as Map<String, dynamic>
+        )
+      ).toList();
     } else {
       throw Exception(
-          'Failed to load garments from API{${response.statusCode}}');
+        'Failed to load garments from API{${response.statusCode}}');
     }
   }
 
