@@ -1,5 +1,8 @@
 name: Flutter CI Pipeline
 
+env:
+  FLUTTER_VERSION: '3.29.2'
+
 on:
   push:
     branches: [ staging ]
@@ -13,7 +16,7 @@ on:
         default: false
         type: boolean
       version:
-        description: 'Version number (e.g., 1.0.0)'
+        description: 'Version number (e.g., X.Y.Z)'
         required: false
         type: string
 
@@ -22,49 +25,51 @@ jobs:
     name: Format Check
     uses: ./.github/workflows/job-format.yml
     with:
-      flutter_version: '3.29.2'
+      flutter_version: ${{ env.FLUTTER_VERSION }}
 
-  test:
-    name: Run Tests (${{ matrix.os }})
+  test_macos:
+    name: Run Tests (macOS)
     needs: format
-    strategy:
-      matrix:
-        include:
-          - os: macOS
-            workflow: ./.github/workflows/job-test-macOS.yml
-          - os: windows
-            workflow: ./.github/workflows/job-test-windows.yml
-    uses: ${{ matrix.workflow }}
+    uses: ./.github/workflows/job-test-macOS.yml
     with:
-      flutter_version: '3.29.2'
+      flutter_version: ${{ env.FLUTTER_VERSION }}
 
-  build:
-    name: Build ${{ matrix.platform }} App
-    needs: [format, test]
-    strategy:
-      matrix:
-        include:
-          - platform: iOS
-            workflow: ./.github/workflows/job-build-ios.yml
-          - platform: Android
-            workflow: ./.github/workflows/job-build-android.yml
-    uses: ${{ matrix.workflow }}
+  test_windows:
+    name: Run Tests (Windows)
+    needs: format
+    uses: ./.github/workflows/job-test-windows.yml
     with:
-      flutter_version: '3.29.2'
+      flutter_version: ${{ env.FLUTTER_VERSION }}
+
+  build_ios:
+    name: Build iOS App
+    needs: [format, test_macos, test_windows]
+    uses: ./.github/workflows/job-build-ios.yml
+    with:
+      flutter_version: ${{ env.FLUTTER_VERSION }}
+      build_number: ${{ github.run_number }}
+    secrets: inherit
+
+  build_android:
+    name: Build Android App
+    needs: [format, test_macos, test_windows]
+    uses: ./.github/workflows/job-build-android.yml
+    with:
+      flutter_version: ${{ env.FLUTTER_VERSION }}
       build_number: ${{ github.run_number }}
     secrets: inherit
 
   release:
     name: Package and Release
-    needs: [format, test, build]
+    needs: [format, test_macos, test_windows, build_ios, build_android]
     if: |
       success() && (
-        inputs.create_release == true || 
-        github.ref == 'refs/heads/main' || 
-        github.ref == 'refs/heads/staging'
+        (github.event_name == 'workflow_dispatch' && 
+        inputs.create_release == true) &&
+        github.ref == 'refs/heads/main'
       )
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -76,6 +81,7 @@ jobs:
         with:
           name: unsigned-ipa
           path: artifacts/ios/ipa
+        continue-on-error: true # Au cas où l'artifact n'existe pas
       
       - name: Download iOS XCArchive
         uses: actions/download-artifact@v4
@@ -99,10 +105,10 @@ jobs:
         id: set_version
         run: |
           if [ "${{ github.event.inputs.version }}" != "" ]; then
-            echo "version=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           else
             VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
-            echo "version=v$VERSION" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
           fi
       
       - name: Generate changelog
