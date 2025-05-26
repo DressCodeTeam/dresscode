@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService extends BaseService {
-  final Ref ref;
-  
   ApiService(this.ref) {
     _dio = Dio(
       BaseOptions(
@@ -30,7 +28,7 @@ class ApiService extends BaseService {
           }
           return handler.next(options);
         },
-        onError: (error, handler) async {
+        onError: (error, handler) {
           if (error.response?.statusCode == 401) {
             // Gérer l'expiration du token ici si nécessaire
           }
@@ -40,6 +38,7 @@ class ApiService extends BaseService {
     );
   }
 
+  final Ref ref;
   late final Dio _dio;
 
   Future<String?> _getToken() async {

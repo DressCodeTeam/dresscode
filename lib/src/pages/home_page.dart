@@ -1,4 +1,5 @@
 import 'package:dresscode/src/constants/colors.dart';
+import 'package:dresscode/src/pages/camera_page.dart';
 import 'package:dresscode/src/pages/closet_page.dart';
 import 'package:dresscode/src/pages/create_outfits.dart';
 import 'package:dresscode/src/pages/outfits_page.dart';
@@ -98,7 +99,12 @@ class HomePage extends ConsumerWidget {
                   ),
                 );
               } else {
-                // open camera
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CameraPage(),
+                  ),
+                );
               }
             },
           ),

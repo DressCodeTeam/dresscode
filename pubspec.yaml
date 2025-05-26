@@ -46,6 +46,7 @@ dependencies:
   hooks_riverpod: ^2.6.1
   freezed_annotation: ^2.4.4
   rive: ^0.13.20
+  camera: ^0.11.1
 
 dev_dependencies:
   flutter_test:
