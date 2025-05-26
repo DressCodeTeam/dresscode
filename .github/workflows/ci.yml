@@ -1,8 +1,5 @@
 name: Flutter CI Pipeline
 
-env:
-  FLUTTER_VERSION: '3.29.2'
-
 on:
   push:
     branches: [ staging ]
@@ -21,47 +18,64 @@ on:
         type: string
 
 jobs:
+  setup:
+    name: Setup Configuration
+    runs-on: ubuntu-latest
+    outputs:
+      flutter_version: ${{ steps.get_flutter_version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Extract Flutter version from .fvmrc
+        id: get_flutter_version
+        run: |
+          VERSION=$(jq -r '.flutter' .fvmrc)
+          echo "Flutter version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
   format:
     name: Format Check
+    needs: setup
     uses: ./.github/workflows/job-format.yml
     with:
-      flutter_version: ${{ env.FLUTTER_VERSION }}
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
 
   test_macos:
     name: Run Tests (macOS)
-    needs: format
+    needs: [setup, format]
     uses: ./.github/workflows/job-test-macOS.yml
     with:
-      flutter_version: ${{ env.FLUTTER_VERSION }}
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
 
   test_windows:
     name: Run Tests (Windows)
-    needs: format
+    needs: [setup, format]
     uses: ./.github/workflows/job-test-windows.yml
     with:
-      flutter_version: ${{ env.FLUTTER_VERSION }}
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
 
   build_ios:
     name: Build iOS App
-    needs: [format, test_macos, test_windows]
+    needs: [setup, format, test_macos, test_windows]
     uses: ./.github/workflows/job-build-ios.yml
     with:
-      flutter_version: ${{ env.FLUTTER_VERSION }}
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
       build_number: ${{ github.run_number }}
     secrets: inherit
 
   build_android:
     name: Build Android App
-    needs: [format, test_macos, test_windows]
+    needs: [setup, format, test_macos, test_windows]
     uses: ./.github/workflows/job-build-android.yml
     with:
-      flutter_version: ${{ env.FLUTTER_VERSION }}
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
       build_number: ${{ github.run_number }}
     secrets: inherit
 
   release:
     name: Package and Release
-    needs: [format, test_macos, test_windows, build_ios, build_android]
+    needs: [setup, format, test_macos, test_windows, build_ios, build_android]
     if: |
       success() && (
         (github.event_name == 'workflow_dispatch' && 
