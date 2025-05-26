@@ -19,7 +19,7 @@ class HomePage extends ConsumerWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.disabledColor,
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           // Pages en plein écran

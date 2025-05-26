@@ -13,9 +13,6 @@ class ClosetPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final garmentEffect = useSideEffect<Garment>();
-    final garmentService = ref.watch(garmentServiceProvider);
-
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -31,7 +28,7 @@ class ClosetPage extends HookConsumerWidget {
 
             // Categories horizontally scrollable
             SizedBox(
-              height: 90,
+              height: 100,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -54,32 +51,48 @@ class ClosetPage extends HookConsumerWidget {
               ),
             ),
 
-            // Display garmentEffect status
-            garmentEffect.snapshot.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              // TODO(aman): replace by error page or dialog
-              error: (error, stack) => Text('Erreur: $error'), 
-              data: (garment) => garment != null 
-                  ? const Text('Vêtement enregistré !') 
-                  : const SizedBox.shrink(),
-            ),
-        
             // Display garments list
-            Expanded(
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final garmentsAsync = ref.watch(garmentsProvider);
+            // Consumer(
+            //   builder: (context, ref, child) {
+            //     final garmentsAsync = ref.watch(garmentsProvider);
+            
+            //     return garmentsAsync.when(
+            //       loading: () => const Center(
+            //         child: CircularProgressIndicator()
+            //       ),
+            //       error: (error, _) => Center(child: Text('Error: $error')),
+            //       data: (garments) => GarmentCard(imageUrl: garments[0].imageUrl)/*GridView.builder(
+            //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //           crossAxisCount: 2,
+            //           mainAxisSpacing: 8,
+            //           crossAxisSpacing: 4,
+            //         ),
+            //         itemCount: garments.length,
+            //         itemBuilder: (context, index) {
+            //           final garment = garments[index];
+            //           return GarmentCard(imageUrl: garment.imageUrl);
+            //         },
+            //       ),*/
+            //     );
+            //   },
+            // ),
 
-                  return garmentsAsync.when(
-                    loading: () => const Center(
-                      child: CircularProgressIndicator()
-                    ),
-                    error: (error, _) => Center(child: Text('Error: $error')),
-                    data: (garments) => GridView.builder(
+            Consumer(
+              builder: (context, ref, child) {
+                final garmentsAsync = ref.watch(garmentsProvider);
+
+                return garmentsAsync.when(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator()
+                  ),
+                  error: (error, _) => Center(child: Text('Error: $error')),
+                  data: (garments) => Expanded( // Ajoute Expanded ici
+                    child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 4,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 12,
+                        childAspectRatio: 180 / 210, // Ratio de ton GarmentCard (largeur/hauteur)
                       ),
                       itemCount: garments.length,
                       itemBuilder: (context, index) {
@@ -87,9 +100,9 @@ class ClosetPage extends HookConsumerWidget {
                         return GarmentCard(imageUrl: garment.imageUrl);
                       },
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ],
         ),

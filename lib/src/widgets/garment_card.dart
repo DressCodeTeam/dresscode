@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dresscode/src/constants/colors.dart';
 import 'package:dresscode/src/shared/extensions/mediaquery_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -11,18 +12,19 @@ class GarmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: context.screenWidth * 0.35,
-      height: context.screenHeight * 0.4,
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        elevation: 2,
-        clipBehavior: Clip.antiAlias,
-        shadowColor: Colors.grey,
+    return Container(
+      height: 210,
+      width: 180,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(4),
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           errorWidget: (context, url, error) => const Icon(Icons.error),
-          fit: BoxFit.fill
+          fit: BoxFit.contain
         ),
       ),
     );

@@ -32,7 +32,7 @@ class ProfileStatsCard extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: AppColors.disabledColor,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withAlpha(25),
