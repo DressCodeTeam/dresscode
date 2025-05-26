@@ -1,4 +1,4 @@
-name: Build for iOS
+name: Build for Android
 
 on:
   workflow_call:
@@ -12,24 +12,31 @@ on:
         type: string
         default: ${{ github.run_number }}
     outputs:
-      ipa_path:
-        description: "Path to generated IPA file"
-        value: ${{ jobs.build_ios.outputs.ipa_path }}
-      xcarchive_path:
-        description: "Path to generated XCArchive file"
-        value: ${{ jobs.build_ios.outputs.xcarchive_path }}
+      apk_path:
+        description: "Path to generated APK file"
+        value: ${{ jobs.build_android.outputs.apk_path }}
+      aab_path:
+        description: "Path to generated AAB file"
+        value: ${{ jobs.build_android.outputs.aab_path }}
 
 jobs:
-  build_ios:
-    name: Build iOS Artifacts
-    runs-on: macos-latest
+  build_android:
+    name: Build Android Artifacts
+    runs-on: windows-latest
     outputs:
-      ipa_path: ${{ steps.build_artifacts.outputs.ipa_path }}
-      xcarchive_path: ${{ steps.build_artifacts.outputs.xcarchive_path }}
+      apk_path: ${{ steps.build_artifacts.outputs.apk_path }}
+      aab_path: ${{ steps.build_artifacts.outputs.aab_path }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -40,54 +47,30 @@ jobs:
       
       - name: Get Flutter dependencies
         run: flutter pub get
-
-      - name: Patch Podfile to include PhoneNumberKit
-        run: |
-          echo "Patching Podfile to add PhoneNumberKit"
-          echo "  pod 'PhoneNumberKit', '~> 3.3'" >> ios/Podfile
-
-      - name: Build iOS artifacts
+      
+      - name: Build Android artifacts
         id: build_artifacts
         run: |
-          # Create directory for build output
-          mkdir -p build/ios/outputs
+          # Build APK
+          flutter build apk --release --build-number=${{ inputs.build_number }}
           
-          # Generate build for XCArchive
-          flutter build ios --release --no-codesign --build-number=${{ inputs.build_number }}
-          
-          # Save the archive path
-          ARCHIVE_PATH=build/ios/archive/Runner.xcarchive
-          
-          # Create archive directory
-          mkdir -p build/ios/archive
-          
-          # Build archive with xcodebuild
-          cd ios
-          xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release -sdk iphoneos -derivedDataPath ../build/ios/archive DEVELOPMENT_TEAM="" CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO
-          cd ..
-          
-          # Create a plain IPA (this is just for CI purposes - not a validly signed IPA)
-          # This step creates a basic IPA structure from the app binary
-          mkdir -p build/ios/outputs/Payload
-          cp -r build/ios/archive/Build/Products/Release-iphoneos/Runner.app build/ios/outputs/Payload/
-          cd build/ios/outputs
-          zip -r app-unsigned.ipa Payload
-          cd ../../..
+          # Build App Bundle (AAB)
+          flutter build appbundle --release --build-number=${{ inputs.build_number }}
           
           # Set output variables
-          echo "ipa_path=build/ios/outputs/app-unsigned.ipa" >> $GITHUB_OUTPUT
-          echo "xcarchive_path=build/ios/archive/Build/Products/Release-iphoneos" >> $GITHUB_OUTPUT
+          echo "apk_path=build/app/outputs/flutter-apk/app-release.apk" >> $env:GITHUB_OUTPUT
+          echo "aab_path=build/app/outputs/bundle/release/app-release.aab" >> $env:GITHUB_OUTPUT
       
-      - name: Upload IPA artifact
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: unsigned-ipa
-          path: build/ios/outputs/app-unsigned.ipa
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 7
       
-      - name: Upload XCArchive artifact
+      - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: xcarchive
-          path: build/ios/archive/Build/Products/Release-iphoneos
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
           retention-days: 7
