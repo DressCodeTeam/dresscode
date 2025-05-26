@@ -1,0 +1,153 @@
+name: Flutter CI Pipeline
+
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging, main ]
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a new release'
+        required: false
+        default: false
+        type: boolean
+      version:
+        description: 'Version number (e.g., X.Y.Z)'
+        required: false
+        type: string
+
+jobs:
+  setup:
+    name: Setup Configuration
+    runs-on: ubuntu-latest
+    outputs:
+      flutter_version: ${{ steps.get_flutter_version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Extract Flutter version from .fvmrc
+        id: get_flutter_version
+        run: |
+          VERSION=$(jq -r '.flutter' .fvmrc)
+          echo "Flutter version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+  format:
+    name: Format Check
+    needs: setup
+    uses: ./.github/workflows/job-format.yml
+    with:
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
+
+  test_macos:
+    name: Run Tests (macOS)
+    needs: [setup, format]
+    uses: ./.github/workflows/job-test-macOS.yml
+    with:
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
+
+  test_windows:
+    name: Run Tests (Windows)
+    needs: [setup, format]
+    uses: ./.github/workflows/job-test-windows.yml
+    with:
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
+
+  build_ios:
+    name: Build iOS App
+    needs: [setup, format, test_macos, test_windows]
+    uses: ./.github/workflows/job-build-ios.yml
+    with:
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
+      build_number: ${{ github.run_number }}
+    secrets: inherit
+
+  build_android:
+    name: Build Android App
+    needs: [setup, format, test_macos, test_windows]
+    uses: ./.github/workflows/job-build-android.yml
+    with:
+      flutter_version: ${{ needs.setup.outputs.flutter_version }}
+      build_number: ${{ github.run_number }}
+    secrets: inherit
+
+  release:
+    name: Package and Release
+    needs: [setup, format, test_macos, test_windows, build_ios, build_android]
+    if: |
+      success() && (
+        (github.event_name == 'workflow_dispatch' && 
+        inputs.create_release == true) &&
+        github.ref == 'refs/heads/main'
+      )
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for changelog generation
+      
+      - name: Download iOS build
+        uses: actions/download-artifact@v4
+        with:
+          name: unsigned-ipa
+          path: artifacts/ios/ipa
+        continue-on-error: true # Au cas où l'artifact n'existe pas
+      
+      - name: Download iOS XCArchive
+        uses: actions/download-artifact@v4
+        with:
+          name: xcarchive
+          path: artifacts/ios/xcarchive
+      
+      - name: Download Android build
+        uses: actions/download-artifact@v4
+        with:
+          name: release-apk
+          path: artifacts/android/apk
+      
+      - name: Download Android App Bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: release-aab
+          path: artifacts/android/aab
+      
+      - name: Set version
+        id: set_version
+        run: |
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v4.6.2
+        with:
+          myToken: ${{ github.token }}
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ github.token }}
+          tag_name: v${{ steps.set_version.outputs.version }}
+          name: Release v${{ steps.set_version.outputs.version }}
+          draft: false
+          prerelease: ${{ github.ref != 'refs/heads/main' }}
+          body: |
+            ## What's Changed
+            ${{ steps.changelog.outputs.changelog }}
+          files: |
+            artifacts/ios/ipa/*.ipa
+            artifacts/android/apk/*.apk
+            artifacts/android/aab/*.aab
+      
+      - name: Release status
+        if: steps.create_release.outcome == 'success'
+        run: echo "Release created successfully! 🚀"
