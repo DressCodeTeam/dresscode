@@ -45,9 +45,9 @@ jobs:
       matrix:
         include:
           - platform: iOS
-            workflow: ./.github/workflows/job-build-macOS.yml
+            workflow: ./.github/workflows/job-build-ios.yml
           - platform: Android
-            workflow: ./.github/workflows/job-build-windows.yml
+            workflow: ./.github/workflows/job-build-android.yml
     uses: ${{ matrix.workflow }}
     with:
       flutter_version: '3.29.2'
