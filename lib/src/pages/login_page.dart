@@ -1,4 +1,4 @@
-import 'package:dresscode/src/providers/auth_controller.dart';
+import 'package:dresscode/src/constants/colors.dart';
 import 'package:dresscode/src/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,8 +50,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final authState = ref.watch(authControllerProvider);
 
     return Scaffold(
+      backgroundColor: AppColors.disabledColor,
       appBar: AppBar(
         title: const Text('Connexion'),
+        backgroundColor: AppColors.primaryColor,
+        foregroundColor: AppColors.disabledColor,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -69,7 +72,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: Icon(Icons.email, color: AppColors.textColor),
+                    labelStyle: TextStyle(color: AppColors.secondaryColor),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor),
+                    ),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -88,12 +95,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   decoration: InputDecoration(
                     labelText: 'Mot de passe',
                     border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.lock),
+                    prefixIcon: const Icon(Icons.lock, color: AppColors.textColor),
+                    labelStyle: const TextStyle(color: AppColors.secondaryColor),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.primaryColor),
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscurePassword
                             ? Icons.visibility
                             : Icons.visibility_off,
+                        color: AppColors.secondaryColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -117,13 +129,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ElevatedButton(
                   onPressed: authState.isLoading ? null : _login,
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    foregroundColor: AppColors.disabledColor,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   child: authState.isLoading
-                      ? const CircularProgressIndicator()
+                      ? const CircularProgressIndicator(color: Colors.white)
                       : const Text('SE CONNECTER',
                           style: TextStyle(fontSize: 16)),
                 ),
@@ -132,6 +146,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/register');
                   },
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.textColor,
+                  ),
                   child: const Text("Pas encore de compte ? S'inscrire"),
                 ),
               ],

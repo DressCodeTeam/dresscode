@@ -24,50 +24,63 @@ class OutfitsCard extends StatelessWidget {
         children: [
           // Card avec les images
           SizedBox(
-            width: context.screenWidth * 0.5,
-            height: context.screenWidth * 0.5,
+            width: context.screenWidth * 0.45,
+            height: context.screenWidth * 0.45,
             child: Card(
               margin: const EdgeInsets.symmetric(horizontal: 4),
-              elevation: 3,
+              elevation: 2,
               clipBehavior: Clip.antiAlias,
-              shadowColor: const Color(0xFFD8C3A5),
+              shadowColor: AppColors.secondaryColor.withOpacity(0.3),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(
+                  color: AppColors.disabledColor.withOpacity(0.2),
+                  width: 1,
+                ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 20.0,
-                  left: 8.0,
-                  right: 8.0,
-                  bottom: 8.0,
-                ),
+                padding: const EdgeInsets.all(12.0),
                 child: GridView.count(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 2,
-                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
                   physics: const NeverScrollableScrollPhysics(),
                   children: imageUrls.take(4).map((imageUrl) {
-                    return CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: AppColors.disabledColor,
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
+                      ),
                     );
                   }).toList(),
                 ),
               ),
             ),
           ),
-
+          const SizedBox(height: 8),
           // Texte en dehors de la card
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          SizedBox(
+            width: context.screenWidth * 0.4,
             child: Text(
               style,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.textColor,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
+                height: 1.2,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
