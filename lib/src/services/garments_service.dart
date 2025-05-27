@@ -27,7 +27,6 @@ class GarmentsService {
 
   Future<Garment> uploadGarmentPhoto({
     required File imageFile,
-    required String category,
     String? description,
   }) async {
     try {
@@ -36,8 +35,6 @@ class GarmentsService {
           imageFile.path,
           filename: 'garment_${DateTime.now().millisecondsSinceEpoch}.jpg',
         ),
-        // 'category': category,
-        // if (description != null) 'description': description,
       });
       final response = await _apiClient.post(
         ApiConstants.garmentEndpoint,

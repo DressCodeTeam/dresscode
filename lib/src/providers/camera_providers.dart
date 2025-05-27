@@ -63,5 +63,3 @@ class CameraControllerNotifier
 }
 
 final capturedImageProvider = StateProvider<File?>((ref) => null);
-
-final selectedCategoryProvider = StateProvider<String>((ref) => 'Pulls');

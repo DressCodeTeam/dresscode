@@ -11,5 +11,7 @@ class ApiConstants {
   static const String findAllOutfitsEndpoint = outfitEndpoint;
   static const String findOutfitByIdEndpoint = outfitEndpoint;
 
+  static const String categoriesEndpoint = '/categories';
+
   static const String loginEndpoint = '$baseUrl/auth/login';
 }

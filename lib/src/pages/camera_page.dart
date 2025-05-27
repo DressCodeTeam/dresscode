@@ -5,7 +5,7 @@ import 'package:dresscode/src/hooks/use_side_effect.dart';
 import 'package:dresscode/src/models/garment.model.dart';
 import 'package:dresscode/src/providers/camera_providers.dart';
 import 'package:dresscode/src/providers/garment_providers.dart';
-import 'package:dresscode/src/widgets/category_button.dart';
+import 'package:dresscode/src/widgets/category_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,7 +16,6 @@ class CameraPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cameraControllerAsync = ref.watch(cameraControllerProvider);
     final capturedImage = ref.watch(capturedImageProvider);
-    final selectedCategory = ref.watch(selectedCategoryProvider);
     final uploadEffect = useSideEffect<Garment>();
     final photoService = ref.watch(garmentServiceProvider);
 
@@ -54,7 +53,6 @@ class CameraPage extends HookConsumerWidget {
       uploadEffect.mutate(
         photoService.uploadGarmentPhoto(
           imageFile: image,
-          category: selectedCategory,
         ),
       );
     }
@@ -130,20 +128,6 @@ class CameraPage extends HookConsumerWidget {
               ),
             ),
           ),
-
-          // Sélecteur de catégorie (visible seulement après capture)
-          if (capturedImage != null) ...[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: CategorySelector(
-                selectedCategory: selectedCategory,
-                onCategoryChanged: (category) {
-                  ref.read(selectedCategoryProvider.notifier).state = category;
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
 
           // Status de l'upload
           uploadEffect.snapshot.when(
