@@ -1,0 +1,85 @@
+name: Build for Android
+
+on:
+  workflow_call:
+    inputs:
+      flutter_version:
+        required: false
+        type: string
+        default: '3.29.2'
+      build_number:
+        required: false
+        type: string
+        default: ${{ github.run_number }}
+    outputs:
+      apk_path:
+        description: "Path to generated APK file"
+        value: ${{ jobs.build_android.outputs.apk_path }}
+      aab_path:
+        description: "Path to generated AAB file"
+        value: ${{ jobs.build_android.outputs.aab_path }}
+
+jobs:
+  build_android:
+    name: Build Android Artifacts
+    runs-on: windows-latest
+    outputs:
+      apk_path: ${{ steps.build_artifacts.outputs.apk_path }}
+      aab_path: ${{ steps.build_artifacts.outputs.aab_path }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: gradle
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter_version }}
+          channel: 'stable'
+          cache: true
+      
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      
+      - name: Setup signing keystore
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/upload-keystore.jks
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=upload-keystore.jks" >> android/key.properties
+
+      - name: Build Android artifacts
+        id: build_artifacts
+        run: |
+          # Build APK
+          flutter build apk --release
+
+          # Build App Bundle (AAB)
+          flutter build appbundle --release
+          
+          # Set output variables
+          echo "apk_path=build/app/outputs/flutter-apk/app-release.apk" >> $env:GITHUB_OUTPUT
+          echo "aab_path=build/app/outputs/bundle/release/app-release.aab" >> $env:GITHUB_OUTPUT
+      
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7
+      
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 7

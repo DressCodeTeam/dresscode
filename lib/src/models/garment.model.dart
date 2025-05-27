@@ -5,8 +5,8 @@ class Garment extends BaseModel {
     required this.id,
     required this.imageUrl,
     required this.subcategory,
-    this.description,
     required this.createdAt,
+    this.description,
   });
 
   factory Garment.empty() {
@@ -14,7 +14,6 @@ class Garment extends BaseModel {
       id: -1,
       imageUrl: '',
       subcategory: '',
-      description: null,
       createdAt: DateTime.now(),
     );
   }
@@ -29,7 +28,7 @@ class Garment extends BaseModel {
     );
   }
 
-   final int id;
+  final int id;
   final String imageUrl;
   final String subcategory;
   final String? description;

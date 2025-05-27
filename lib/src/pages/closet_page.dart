@@ -1,7 +1,8 @@
-import 'package:dresscode/src/constants/colors.dart';
-import 'package:dresscode/src/hooks/use_side_effect.dart';
-import 'package:dresscode/src/models/garment.model.dart';
+import 'package:dresscode/src/providers/categories_provider.dart';
 import 'package:dresscode/src/providers/garment_providers.dart';
+import 'package:dresscode/src/widgets/category_buttons.dart';
+import 'package:dresscode/src/widgets/garment_card.dart';
+import 'package:dresscode/src/widgets/profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -10,56 +11,52 @@ class ClosetPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final garmentEffect = useSideEffect<Garment>();
-    final garmentService = ref.watch(garmentServiceProvider);
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        child: Column(
+          children: [
+            // Profil
+            const ProfileStatsCard(
+              userName: 'John Doe',
+              totalClothes: 3,
+              totalOutfits: 1,
+            ),
+            const SizedBox(height: 16),
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Garde-robe',
-          style: TextStyle(color: Colors.white)
-        ),
-        backgroundColor: AppColors.primaryColor.withAlpha(200),
-      ),
-      body: Column(
-        children: [
-          // Display garmentEffect status
-          garmentEffect.snapshot.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
-            // TODO(aman): replace by error page or dialog
-            error: (error, stack) => Text('Error: $error'), 
-            data: (garment) => garment != null 
-                ? const Text('Garment successfully created !') 
-                : const SizedBox.shrink(),
-          ),
+            // Liste des catégories
+            const CategoriesHorizontalList(),
 
-          // Display garments list
-          Expanded(
-            child: Consumer(
+            // Vêtements enregistrés
+            Consumer(
               builder: (context, ref, child) {
-                final garmentsAsync = ref.watch(garmentsProvider);
+                final garmentsAsync = ref.watch(filteredGarmentsProvider);
 
                 return garmentsAsync.when(
                   loading: () => const Center(
                     child: CircularProgressIndicator()
                   ),
                   error: (error, _) => Center(child: Text('Error: $error')),
-                  data: (garments) => ListView.builder(
-                    itemCount: garments.length,
-                    itemBuilder: (context, index) {
-                      final garment = garments[index];
-                      return ListTile(
-                        title: Text('Garment ${garment.id}'),
-                        subtitle: Text('Created: ${garment.createdAt}'),
-                      );
-                    },
+                  data: (garments) => Expanded( // Ajoute Expanded ici
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 12,
+                        childAspectRatio: 180 / 210, // Ratio de ton GarmentCard (largeur/hauteur)
+                      ),
+                      itemCount: garments.length,
+                      itemBuilder: (context, index) {
+                        final garment = garments[index];
+                        return GarmentCard(imageUrl: garment.imageUrl);
+                      },
+                    ),
                   ),
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
