@@ -1,8 +1,6 @@
-import 'package:dresscode/src/constants/colors.dart';
-import 'package:dresscode/src/hooks/use_side_effect.dart';
-import 'package:dresscode/src/models/garment.model.dart';
+import 'package:dresscode/src/providers/categories_provider.dart';
 import 'package:dresscode/src/providers/garment_providers.dart';
-import 'package:dresscode/src/widgets/category_button.dart';
+import 'package:dresscode/src/widgets/category_buttons.dart';
 import 'package:dresscode/src/widgets/garment_card.dart';
 import 'package:dresscode/src/widgets/profile_card.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,7 @@ class ClosetPage extends HookConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Column(
           children: [
-            // Profile
+            // Profil
             const ProfileStatsCard(
               userName: 'John Doe',
               totalClothes: 3,
@@ -26,60 +24,13 @@ class ClosetPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 16),
 
-            // Categories horizontally scrollable
-            SizedBox(
-              height: 100,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: CategoryCircle(
-                      imagePath: 'assets/images/all-clothes.png',
-                      categoryName: 'Tout',
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    child: CategoryCircle(
-                      imagePath: 'assets/images/pulls-icon.png',
-                      categoryName: 'Hauts',
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Liste des catégories
+            const CategoriesHorizontalList(),
 
-            // Display garments list
-            // Consumer(
-            //   builder: (context, ref, child) {
-            //     final garmentsAsync = ref.watch(garmentsProvider);
-            
-            //     return garmentsAsync.when(
-            //       loading: () => const Center(
-            //         child: CircularProgressIndicator()
-            //       ),
-            //       error: (error, _) => Center(child: Text('Error: $error')),
-            //       data: (garments) => GarmentCard(imageUrl: garments[0].imageUrl)/*GridView.builder(
-            //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //           crossAxisCount: 2,
-            //           mainAxisSpacing: 8,
-            //           crossAxisSpacing: 4,
-            //         ),
-            //         itemCount: garments.length,
-            //         itemBuilder: (context, index) {
-            //           final garment = garments[index];
-            //           return GarmentCard(imageUrl: garment.imageUrl);
-            //         },
-            //       ),*/
-            //     );
-            //   },
-            // ),
-
+            // Vêtements enregistrés
             Consumer(
               builder: (context, ref, child) {
-                final garmentsAsync = ref.watch(garmentsProvider);
+                final garmentsAsync = ref.watch(filteredGarmentsProvider);
 
                 return garmentsAsync.when(
                   loading: () => const Center(
