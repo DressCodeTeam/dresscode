@@ -1,3 +1,4 @@
+import 'package:dresscode/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -37,14 +38,31 @@ class _SelectableGarmentCardState extends State<SelectableGarmentCard> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Card(
-          elevation: 3,
-          child: CachedNetworkImage(
-            imageUrl: widget.imageUrl,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isSelected ? AppColors.secondaryColor : AppColors.disabledColor,
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: CachedNetworkImage(
+              imageUrl: widget.imageUrl,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
         ),
         Positioned(
@@ -54,7 +72,7 @@ class _SelectableGarmentCardState extends State<SelectableGarmentCard> {
             onTap: toggleSelection,
             borderRadius: BorderRadius.circular(20),
             child: CircleAvatar(
-              backgroundColor: isSelected ? Colors.red : Colors.green,
+              backgroundColor: isSelected ? AppColors.secondaryColor : AppColors.primaryColor,
               radius: 16,
               child: Icon(
                 isSelected ? Icons.remove : Icons.add,

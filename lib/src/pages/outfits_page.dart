@@ -16,58 +16,96 @@ class OutfitsPage extends ConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Mes outfits',
-          style: TextStyle(color: Colors.white)
+          'Mes Outfits',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        backgroundColor: AppColors.primaryColor.withAlpha(200),
+        backgroundColor: AppColors.primaryColor,
       ),
-      body: outfitsAsyncValue.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(
-          child: Text('Erreur : $error'),
-        ),
-        data: (outfits) {
-          if (outfits.isEmpty) {
-            return const Center(
-              child: Text('Aucun outfit créé pour le moment'),
-            );
-          }
-          
-          return Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 0.7,
-              ),
-              itemCount: outfits.length,
-              itemBuilder: (context, index) {
-                final outfit = outfits[index];
-                final imageUrls = outfit.garments
-                    .map((g) => g.imageUrl)
-                    .where((url) => url.isNotEmpty)
-                    .toList();
-                
-                return OutfitsCard(
-                  imageUrls: imageUrls,
-                  style: outfit.style, // Ajout du style de l'outfit
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => OutfitDetailPage(
-                          imageUrls: imageUrls,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+      body: Container(
+        color: AppColors.disabledColor.withOpacity(0.2), // Fond subtil
+        child: outfitsAsyncValue.when(
+          loading: () => Center(
+            child: CircularProgressIndicator(color: AppColors.primaryColor),
+          ),
+          error: (error, stackTrace) => Center(
+            child: Text(
+              'Une erreur est survenue',
+              style: TextStyle(color: AppColors.textColor),
             ),
-          );
-        },
+          ),
+          data: (outfits) {
+            if (outfits.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.warehouse,
+                      size: 48,
+                      color: AppColors.secondaryColor.withOpacity(0.5),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Aucun outfit créé pour le moment',
+                      style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Commencez par créer votre premier outfit',
+                      style: TextStyle(
+                        color: AppColors.textColor.withOpacity(0.7),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 0.75,
+                ),
+                itemCount: outfits.length,
+                itemBuilder: (context, index) {
+                  final outfit = outfits[index];
+                  final imageUrls = outfit.garments
+                      .map((g) => g.imageUrl)
+                      .where((url) => url.isNotEmpty)
+                      .toList();
+                  
+                  return OutfitsCard(
+                    imageUrls: imageUrls,
+                    style: outfit.style,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => OutfitDetailPage(
+                            imageUrls: imageUrls,
+                            style: outfit.style,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
