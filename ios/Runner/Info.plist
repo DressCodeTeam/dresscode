@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Cette app a besoin d'accéder à la caméra pour prendre des photos de vêtements</string>
 </dict>
 </plist>

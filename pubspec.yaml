@@ -46,6 +46,7 @@ dependencies:
   hooks_riverpod: ^2.6.1
   freezed_annotation: ^2.4.4
   rive: ^0.13.20
+  camera: ^0.11.1
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +96,7 @@ flutter:
     - assets/icons/animated_icon_set_-_1_color.riv
     - assets/icons/icons_set_2.riv
     - assets/icons/icons_set_3.riv
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

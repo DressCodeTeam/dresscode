@@ -10,7 +10,7 @@ final garmentServiceProvider = Provider<GarmentsService>((ref) {
   return GarmentsService(apiClient);
 });
 
-final garmentsProvider = FutureProvider<List<Garment>>((ref) async {
+final garmentsProvider = FutureProvider<List<Garment>>((ref) {
   final garmentService = ref.watch(garmentServiceProvider);
   return garmentService.getGarments();
 });

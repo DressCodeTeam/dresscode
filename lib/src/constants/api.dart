@@ -5,8 +5,6 @@ class ApiConstants {
 
 
   static const String garmentEndpoint = '/garments';
-  static const String createGarmentEndpoint = '$garmentEndpoint/create';
-  static const String findAllGarmentEndpoint = garmentEndpoint;
 
   static const String outfitEndpoint = '/outfits';
   static const String createOutfitEndpoint = outfitEndpoint;
