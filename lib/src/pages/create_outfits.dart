@@ -15,7 +15,7 @@ class CreateOutfitPage extends ConsumerStatefulWidget {
 
 class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
   final Set<int> selectedIndices = {};
-  final int minimumGarments = 3;
+  final int minimumGarments = 2; // Nombre minimum de vêtements requis
 
   void handleSelection(int index, bool selected) {
     setState(() {
@@ -28,24 +28,35 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
   }
 
   Future<void> saveOutfit(List<Garment> garments) async {
-    if (selectedIndices.isEmpty) {
+    if (selectedIndices.length < minimumGarments) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Veuillez sélectionner au moins un vêtement.')),
+        SnackBar(
+          content: Text('Veuillez sélectionner au moins $minimumGarments vêtements.'),
+        ),
       );
       return;
     }
 
     // Récupérer les IDs des vêtements sélectionnés
-    final selectedGarmentIds =
-        selectedIndices.map((i) => garments[i].id).toList();
+    final selectedGarments = selectedIndices
+      .map((i) => garments[i])
+      .where((g) => g.id != null)
+      .toList();
+
+      debugPrint('════════════════════════════════════════════');
+      debugPrint('Vêtements sélectionnés:');
+      selectedGarments.forEach((g) => print('- ID: ${g.id}, Image: ${g.imageUrl}'));
+      print('════════════════════════════════════════════');
+
+
 
     try {
-      // Appeler le provider pour créer un Outfit
-      await ref.read(createOutfitProvider({
-        'style': 'Personnalisé', // Style par défaut
-        'garments': selectedGarmentIds,
-      }).future);
+      // Appeler le service pour créer un Outfit
+      final outfitsService = ref.read(outfitsServiceProvider);
+      await outfitsService.createOutfit(
+        1, // Style par défaut
+        selectedGarments,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Outfit enregistré avec succès !')),
@@ -55,6 +66,7 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
       setState(() {
         selectedIndices.clear();
       });
+      ref.refresh(outfitsProvider);
 
       // Retourner à la page précédente
       Navigator.pop(context);
@@ -67,70 +79,54 @@ class _CreateOutfitPageState extends ConsumerState<CreateOutfitPage> {
 
   @override
   Widget build(BuildContext context) {
-    final garments = ref.watch(garmentsProvider);
+    final garmentsAsyncValue = ref.watch(garmentsProvider);
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        title: const Text(
-          'Créer un outfit',
-          style: TextStyle(color: Colors.white),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Crée ton propre Outfit'),
+        centerTitle: true,
       ),
-      backgroundColor: AppColors.disabledColor,
-      body: garments.when(
-        data: (garmentsList) => Padding(
+      body: garmentsAsyncValue.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => Center(
+          child: Text('Erreur : $error'),
+        ),
+        data: (garments) => Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: GridView.builder(
-                  itemCount: garmentsList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                  ),
-                  itemBuilder: (context, index) => SelectableGarmentCard(
-                    imageUrl: garmentsList[index].imageUrl,
-                    initiallySelected: selectedIndices.contains(index),
-                    onSelectionChanged: (selected) =>
-                        handleSelection(index, selected),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.secondaryColor,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 14,
-                    horizontal: 24,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 5,
-                ),
-                onPressed: selectedIndices.isNotEmpty
-                ? () => saveOutfit(garmentsList)
-                : null,
-                icon: const Icon(Icons.check, color: Colors.white),
-                label: const Text(
-                  'Enregistrer l’outfit',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
+          child: GridView.builder(
+            itemCount: garments.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+            ),
+            itemBuilder: (context, index) {
+              final garment = garments[index];
+              return SelectableGarmentCard(
+                imageUrl: garment.imageUrl,
+                initiallySelected: selectedIndices.contains(index),
+                onSelectionChanged: (selected) => handleSelection(index, selected),
+              );
+            },
           ),
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(
-          child: Text(
-            'Erreur : $error',
-            style: const TextStyle(color: Colors.red),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12),
+        child: ElevatedButton(
+          onPressed: garmentsAsyncValue.maybeWhen(
+            data: (garments) => () => saveOutfit(garments),
+            orElse: () => null,
+          ),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            backgroundColor: selectedIndices.length >= minimumGarments
+                ? AppColors.primaryColor
+                : Colors.grey,
+          ),
+          child: const Text(
+            "Enregistrer l'outfit",
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),

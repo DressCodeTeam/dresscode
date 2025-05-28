@@ -20,11 +20,13 @@ class Garment extends BaseModel {
 
   factory Garment.fromJSON(Map<String, dynamic> json) {
     return Garment(
-      id: json['id'] as int,
-      imageUrl: json['image_url'] as String,
-      subcategory: json['subcategory'] as String,
-      description: json['description'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      id: json['id'] as int? ?? -1,
+      imageUrl: json['image_url']?.toString() ?? '',
+      subcategory: json['subcategory']?.toString() ?? 'Inconnu',
+      description: json['description']?.toString(),
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
     );
   }
 

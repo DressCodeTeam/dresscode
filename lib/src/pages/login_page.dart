@@ -65,15 +65,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const FlutterLogo(size: 100),
+                // const FlutterLogo(size: 100),
+                Image.asset('assets/images/ydays_logo.png', height: 100),
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email, color: AppColors.textColor),
-                    labelStyle: TextStyle(color: AppColors.secondaryColor),
+                    prefixIcon: Icon(Icons.email, color: AppColors.secondaryColor),
+                    labelStyle: TextStyle(color: AppColors.blackColor),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: AppColors.primaryColor),
                     ),
@@ -95,8 +96,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   decoration: InputDecoration(
                     labelText: 'Mot de passe',
                     border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.lock, color: AppColors.textColor),
-                    labelStyle: const TextStyle(color: AppColors.secondaryColor),
+                    prefixIcon: const Icon(Icons.lock, color: AppColors.secondaryColor),
+                    labelStyle: const TextStyle(color: AppColors.blackColor),
                     focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: AppColors.primaryColor),
                     ),
@@ -147,7 +148,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     Navigator.pushNamed(context, '/register');
                   },
                   style: TextButton.styleFrom(
-                    foregroundColor: AppColors.textColor,
+                    foregroundColor: AppColors.blackColor,
                   ),
                   child: const Text("Pas encore de compte ? S'inscrire"),
                 ),

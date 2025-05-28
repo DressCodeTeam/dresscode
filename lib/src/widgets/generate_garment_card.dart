@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dresscode/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-class GarmentCard extends StatelessWidget {
+class GGarmentCard extends StatelessWidget {
   final String imageUrl;
   final double width;
   final double height;
 
-  const GarmentCard({
+  const GGarmentCard({
     required this.imageUrl,
     this.width = 180,
     this.height = 210,
@@ -28,24 +28,11 @@ class GarmentCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         child: CachedNetworkImage(
           imageUrl: imageUrl,
-          placeholder: (context, url) => Container(
-            color: Colors.grey[200],
-            child: Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primaryColor,
-                strokeWidth: 2,
-              ),
-            ),
+          placeholder: (context, url) => Center(
+            child: CircularProgressIndicator(color: AppColors.primaryColor),
           ),
-          errorWidget: (context, url, error) => Container(
-            color: Colors.grey[200],
-            child: const Icon(Icons.error, color: Colors.red),
-          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.red),
           fit: BoxFit.cover,
-          width: width,
-          height: height,
-          httpHeaders: {
-          },
         ),
       ),
     );

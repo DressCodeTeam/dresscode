@@ -95,6 +95,45 @@ class OutfitsService {
     }
   }
 
+  // Generer un outfit avec l'IA
+  Future<List<Outfit>> generateOutfits({
+    required int nbOutfits,
+    required int styleId,
+    required String weather,
+  }) async {
+    try {
+      final payload = {
+        'nb_outfits': nbOutfits,
+        'style_id': styleId,
+        'weather': weather,
+      };
+
+      print('Payload envoyé pour la génération d\'outfits : $payload');
+
+      final response = await _apiClient.post(
+        ApiConstants.generateOutfitsEndpoint,
+        data: payload,
+      );
+
+      print(
+          'Réponse de l\'API pour la génération d\'outfits : ${response.data}');
+
+      if (response.statusCode == 201) {
+        final data = response.data as List<dynamic>;
+        return data.map((outfitData) {
+          return Outfit.fromJSON(
+            outfitData as Map<String, dynamic>,
+          );
+        }).toList();
+      } else {
+        throw Exception('Erreur ${response.statusCode}: ${response.data}');
+      }
+    } catch (e) {
+      print('Erreur lors de la génération des outfits : $e');
+      rethrow;
+    }
+  }
+
   // Supprimer un outfit par ID
   Future<void> deleteOutfit(String id) async {
     await _apiClient.delete('${ApiConstants.findOutfitByIdEndpoint}/$id');

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:dresscode/src/constants/colors.dart';
 import 'package:dresscode/src/hooks/use_side_effect.dart';

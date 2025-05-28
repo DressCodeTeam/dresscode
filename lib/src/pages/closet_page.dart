@@ -1,6 +1,3 @@
-import 'package:dresscode/src/constants/colors.dart';
-import 'package:dresscode/src/hooks/use_side_effect.dart';
-import 'package:dresscode/src/models/garment.model.dart';
 import 'package:dresscode/src/providers/garment_providers.dart';
 import 'package:dresscode/src/widgets/category_button.dart';
 import 'package:dresscode/src/widgets/garment_card.dart';
@@ -20,7 +17,7 @@ class ClosetPage extends HookConsumerWidget {
           children: [
             // Profile
             const ProfileStatsCard(
-              userName: 'John Doe',
+              userName: 'Jane Doe',
               totalClothes: 3,
               totalOutfits: 1,
             ),

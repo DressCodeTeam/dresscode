@@ -27,6 +27,7 @@ class OutfitsCard extends StatelessWidget {
             width: context.screenWidth * 0.45,
             height: context.screenWidth * 0.45,
             child: Card(
+              // surfaceTintColor: Colors.transparent,
               margin: const EdgeInsets.symmetric(horizontal: 4),
               elevation: 2,
               clipBehavior: Clip.antiAlias,

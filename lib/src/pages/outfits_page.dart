@@ -5,11 +5,23 @@ import 'package:dresscode/src/widgets/outfits_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OutfitsPage extends ConsumerWidget {
+class OutfitsPage extends ConsumerStatefulWidget {
   const OutfitsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OutfitsPage> createState() => _OutfitsPageState();
+}
+
+class _OutfitsPageState extends ConsumerState<OutfitsPage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Rafraîchir le provider lorsque la page est affichée
+    ref.refresh(outfitsProvider);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final outfitsAsyncValue = ref.watch(outfitsProvider);
 
     return Scaffold(
